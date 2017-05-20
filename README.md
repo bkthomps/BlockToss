@@ -3,6 +3,7 @@ Projects which relate to the course ECE 155.
 
 This repository should be private, and the only ones able to access it being Bailey, Charles, and Richard. If this is not the case, please let one of us know.
 
+
 Commit Standard:
 1. GitHub will be used as the version control. SubVersion will be used as the final dropbox.
 2. When your changes are done, copy and paste your .java files and your single .xml file into a folder on your desktop.
@@ -11,6 +12,7 @@ Commit Standard:
 5. Copy and paste all of the files that are in the folder on your desktop into the GitHub upload files window.
 6. Create a commit message which is meaningful so other members of the group know what you committed. Be sure to write it in third-person present tense.
 7. Click the commit button at the bottom of the screen and wait for GitHub to be done.
+
 
 Coding Standard:
 1. Classes use PascalCase, ie: String.
