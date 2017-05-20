@@ -10,7 +10,8 @@ Commit Standard:
 4. Click upload files at the top right of the screen.
 5. Copy and paste all of the files that are in the folder on your desktop into the GitHub upload files window.
 6. Create a commit message which is meaningful so other members of the group know what you committed. Be sure to write it in third-person present tense.
-7. Click the commit button at the bottom of the screen and wait for GitHub to be done.
+7. Right under the commit message, click the "create a new branch for this commit and start a pull request" button.
+8. Right under the last button, click the green "propose file change" button and wait for GitHub to finish.
 
 Coding Standard:
 1. Classes use PascalCase.
