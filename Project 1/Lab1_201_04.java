@@ -5,12 +5,12 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class Lab1_201_04 extends AppCompatActivity {
-
-    final static String SPACING = "     ";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +22,7 @@ public class Lab1_201_04 extends AppCompatActivity {
         final LinearLayout layout = (LinearLayout) findViewById(R.id.layout);
 
         // Create handles
+        final Button resetHistoricalHigh = createButtonHandleProperties(layout, "Reset Historical High Readings");
         final TextView lightHandle = createTextHandleProperties(layout, "lightLabel");
         final TextView accelerometerHandle = createTextHandleProperties(layout, "accelerometerLabel");
         final TextView magneticFieldHandle = createTextHandleProperties(layout, "magneticFieldLabel");
@@ -47,6 +48,16 @@ public class Lab1_201_04 extends AppCompatActivity {
         sensorManager.registerListener(accelerometerHandler, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(magneticFieldHandler, magneticFieldSensor, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(rotationVectorHandler, rotationVectorSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+        // Button Handler
+        resetHistoricalHigh.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                lightHandler.resetHistoricalHigh();
+                accelerometerHandler.resetHistoricalHigh();
+                magneticFieldHandler.resetHistoricalHigh();
+                rotationVectorHandler.resetHistoricalHigh();
+            }
+        });
     }
 
     private TextView createTextHandleProperties(LinearLayout layout, String label) {
@@ -56,6 +67,17 @@ public class Lab1_201_04 extends AppCompatActivity {
         layout.addView(handle);
         handle.setTextSize(TEXT_SIZE);
         handle.setTextColor(Color.BLACK);
+        return handle;
+    }
+
+    private Button createButtonHandleProperties(LinearLayout layout, String label) {
+        final int TEXT_SIZE = 20;
+        final Button handle = new Button(getApplicationContext());
+        handle.setText(label);
+        layout.addView(handle);
+        handle.setTextSize(TEXT_SIZE);
+        handle.setTextColor(Color.BLACK);
+        handle.setBackgroundColor(Color.rgb(66, 152, 244));
         return handle;
     }
 }

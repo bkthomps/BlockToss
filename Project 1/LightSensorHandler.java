@@ -11,6 +11,8 @@ class LightSensorHandler implements SensorEventListener {
 
     private final TextView text;
 
+    private float highest;
+
     LightSensorHandler(TextView text) {
         this.text = text;
     }
@@ -21,8 +23,22 @@ class LightSensorHandler implements SensorEventListener {
 
     public void onSensorChanged(SensorEvent eventInfo) {
         final float lightReading = eventInfo.values[0];
-        final String lightSensorReading = Lab1_201_04.SPACING + "Light sensor reading: "
+        setHistoricalHigh(lightReading);
+        final String currentReading = "\n   Light Reading:\n        "
                 + String.format(Locale.US, "(%.2f)", lightReading);
-        text.setText(lightSensorReading);
+        final String highestReading = "\n\n   Highest Light Reading:\n        "
+                + String.format(Locale.US, "(%.2f)", highest);
+        final String reading = currentReading + highestReading;
+        text.setText(reading);
+    }
+
+    void resetHistoricalHigh() {
+        highest = 0;
+    }
+
+    private void setHistoricalHigh(float light) {
+        if (light > highest) {
+            highest = light;
+        }
     }
 }

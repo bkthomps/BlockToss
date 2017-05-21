@@ -11,6 +11,10 @@ class AccelerometerSensorHandler implements SensorEventListener {
 
     private final TextView text;
 
+    private float xHighest;
+    private float yHighest;
+    private float zHighest;
+
     AccelerometerSensorHandler(TextView text) {
         this.text = text;
     }
@@ -20,11 +24,33 @@ class AccelerometerSensorHandler implements SensorEventListener {
     }
 
     public void onSensorChanged(SensorEvent eventInfo) {
-        final float xAcceleration = eventInfo.values[0];
-        final float yAcceleration = eventInfo.values[1];
-        final float zAcceleration = eventInfo.values[2];
-        final String accelerometerSensorReading = Lab1_201_04.SPACING + "Accelerometer sensor reading: "
-                + String.format(Locale.US, "(%.2f, %.2f, %.2f)", xAcceleration, yAcceleration, zAcceleration);
-        text.setText(accelerometerSensorReading);
+        final float xCurrent = eventInfo.values[0];
+        final float yCurrent = eventInfo.values[1];
+        final float zCurrent = eventInfo.values[2];
+        setHistoricalHigh(xCurrent, yCurrent, zCurrent);
+        final String currentReading = "\n   Accelerometer Reading:\n        "
+                + String.format(Locale.US, "(%.2f, %.2f, %.2f)", xCurrent, yCurrent, zCurrent);
+        final String historicalHighReading = "\n\n   Highest Accelerometer Reading:\n        "
+                + String.format(Locale.US, "(%.2f, %.2f, %.2f)", xHighest, yHighest, zHighest);
+        final String reading = currentReading + historicalHighReading;
+        text.setText(reading);
+    }
+
+    void resetHistoricalHigh() {
+        xHighest = 0;
+        yHighest = 0;
+        zHighest = 0;
+    }
+
+    private void setHistoricalHigh(float x, float y, float z) {
+        if (Math.abs(x) > Math.abs(xHighest)) {
+            xHighest = x;
+        }
+        if (Math.abs(y) > Math.abs(yHighest)) {
+            yHighest = y;
+        }
+        if (Math.abs(z) > Math.abs(zHighest)) {
+            zHighest = z;
+        }
     }
 }
