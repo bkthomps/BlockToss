@@ -5,7 +5,7 @@ This repository should be private, and the only ones able to access it being Bai
 
 Commit Standard:
 1. GitHub shall be used as the version control. SubVersion shall be used as the final dropbox.
-2. When your changes are done, copy and paste your .java files and your single .xml file into a folder on your desktop.
+2. When your changes are done, copy and paste your .java files and the two .xml files into a folder on your desktop.
 3. Click on the project folder in this repository that you are working on.
 4. Click upload files at the top right of the screen.
 5. Copy and paste all of the files that are in the folder on your desktop into the GitHub upload files window.
