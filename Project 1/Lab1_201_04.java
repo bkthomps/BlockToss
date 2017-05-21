@@ -13,9 +13,12 @@ import android.widget.TextView;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
+
+import ca.uwaterloo.sensortoy.LineGraphView;
 
 public class Lab1_201_04 extends AppCompatActivity {
-
+    LineGraphView graph;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Set up basics
@@ -26,6 +29,9 @@ public class Lab1_201_04 extends AppCompatActivity {
         final LinearLayout layout = (LinearLayout) findViewById(R.id.layout);
 
         // Create handles
+        graph = new LineGraphView(getApplicationContext(),100, Arrays.asList("x","y","z"));
+        layout.addView(graph);
+        graph.setVisibility(View.VISIBLE);
         final Button resetHistoricalHigh = createButtonHandleProperties(layout, "Reset Historical High Readings");
         final TextView bufferSpace = createTextHandleProperties(layout, "");
         final Button saveAccelerometerData = createButtonHandleProperties(layout, "Save Accelerometer Data");
@@ -36,7 +42,7 @@ public class Lab1_201_04 extends AppCompatActivity {
 
         // Create handlers
         final LightSensorHandler lightHandler = new LightSensorHandler(lightHandle);
-        final AccelerometerSensorHandler accelerometerHandler = new AccelerometerSensorHandler(accelerometerHandle);
+        final AccelerometerSensorHandler accelerometerHandler = new AccelerometerSensorHandler(accelerometerHandle,graph);
         final MagneticFieldSensorHandler magneticFieldHandler = new MagneticFieldSensorHandler(magneticFieldHandle);
         final RotationVectorSensorHandler rotationVectorHandler = new RotationVectorSensorHandler(rotationVectorHandle);
 
