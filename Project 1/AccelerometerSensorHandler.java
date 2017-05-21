@@ -3,7 +3,6 @@ package lab1_201_04.uwaterloo.ca.lab1_201_04;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
-import android.icu.lang.UCharacter;
 import android.widget.TextView;
 
 import java.util.Locale;
@@ -30,7 +29,7 @@ class AccelerometerSensorHandler implements SensorEventListener {
     private float yHighest;
     private float zHighest;
 
-    AccelerometerSensorHandler(TextView text,LineGraphView graph) {
+    AccelerometerSensorHandler(TextView text, LineGraphView graph) {
         this.text = text;
         this.graph = graph;
     }
@@ -89,7 +88,7 @@ class AccelerometerSensorHandler implements SensorEventListener {
         latestReadings[2][NEWEST_INDEX] = z;
     }
 
-    private void setGraphView(float[] values){
+    private void setGraphView(float[] values) {
         graph.addPoint(values);
     }
 
