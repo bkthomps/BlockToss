@@ -3,9 +3,12 @@ package lab1_201_04.uwaterloo.ca.lab1_201_04;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
+import android.icu.lang.UCharacter;
 import android.widget.TextView;
 
 import java.util.Locale;
+
+import ca.uwaterloo.sensortoy.LineGraphView;
 
 class AccelerometerSensorHandler implements SensorEventListener {
 
@@ -15,6 +18,7 @@ class AccelerometerSensorHandler implements SensorEventListener {
     static final int OLDEST_INDEX = 0;
 
     private final TextView text;
+    private final LineGraphView graph;
 
     private float[][] latestReadings = new float[DIMENSIONS][SAVE_HISTORY];
 
@@ -26,8 +30,9 @@ class AccelerometerSensorHandler implements SensorEventListener {
     private float yHighest;
     private float zHighest;
 
-    AccelerometerSensorHandler(TextView text) {
+    AccelerometerSensorHandler(TextView text,LineGraphView graph) {
         this.text = text;
+        this.graph = graph;
     }
 
     public void onAccuracyChanged(Sensor s, int i) {
@@ -41,6 +46,8 @@ class AccelerometerSensorHandler implements SensorEventListener {
         setLatestReading(xCurrent, yCurrent, zCurrent);
         setHistoricalHigh(xCurrent, yCurrent, zCurrent);
         setDisplayText();
+        setGraphView(eventInfo.values);
+
     }
 
     void resetHistoricalHigh() {
@@ -80,6 +87,10 @@ class AccelerometerSensorHandler implements SensorEventListener {
         latestReadings[0][NEWEST_INDEX] = x;
         latestReadings[1][NEWEST_INDEX] = y;
         latestReadings[2][NEWEST_INDEX] = z;
+    }
+
+    private void setGraphView(float[] values){
+        graph.addPoint(values);
     }
 
     float[] getLatestReadingsAtIndex(int index) {
