@@ -10,6 +10,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 public class Lab1_201_04 extends AppCompatActivity {
 
     @Override
@@ -23,6 +27,8 @@ public class Lab1_201_04 extends AppCompatActivity {
 
         // Create handles
         final Button resetHistoricalHigh = createButtonHandleProperties(layout, "Reset Historical High Readings");
+        final TextView bufferSpace = createTextHandleProperties(layout, "");
+        final Button saveAccelerometerData = createButtonHandleProperties(layout, "Save Accelerometer Data");
         final TextView lightHandle = createTextHandleProperties(layout, "lightLabel");
         final TextView accelerometerHandle = createTextHandleProperties(layout, "accelerometerLabel");
         final TextView magneticFieldHandle = createTextHandleProperties(layout, "magneticFieldLabel");
@@ -49,13 +55,20 @@ public class Lab1_201_04 extends AppCompatActivity {
         sensorManager.registerListener(magneticFieldHandler, magneticFieldSensor, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(rotationVectorHandler, rotationVectorSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
-        // Button Handler
+        // Initialize button
         resetHistoricalHigh.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 lightHandler.resetHistoricalHigh();
                 accelerometerHandler.resetHistoricalHigh();
                 magneticFieldHandler.resetHistoricalHigh();
                 rotationVectorHandler.resetHistoricalHigh();
+            }
+        });
+
+        // Initialize button
+        saveAccelerometerData.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                saveReadings(accelerometerHandler);
             }
         });
     }
@@ -79,5 +92,35 @@ public class Lab1_201_04 extends AppCompatActivity {
         handle.setTextColor(Color.BLACK);
         handle.setBackgroundColor(Color.rgb(66, 152, 244));
         return handle;
+    }
+
+    /**
+     * Will save to .csv file in CSV format (comma-separated list). Ie: "x-val,y-val,z-val". Each of the SAVE_HISTORY
+     * amount of readings is saved to the file with oldest readings at the top and newest at the bottom. The file name
+     * is in format: "accelerometerReadings_nanoTime_" + currentNanoTime + ".csv".
+     */
+    void saveReadings(AccelerometerSensorHandler accelerometerHandler) {
+        final long currentNanoTime = System.nanoTime();
+        final String fileName = "accelerometerReadings_nanoTime_" + currentNanoTime + ".csv";
+        createFile(fileName, accelerometerHandler);
+    }
+
+    private void createFile(String fileName, AccelerometerSensorHandler accelerometerHandler) {
+        PrintWriter writer = null;
+        try {
+            final File fileHandle = new File(getExternalFilesDir("Lab1_201_04"), fileName);
+            writer = new PrintWriter(fileHandle);
+            for (int i = AccelerometerSensorHandler.OLDEST_INDEX; i <= AccelerometerSensorHandler.NEWEST_INDEX; i++) {
+                final float[] latestReadings = accelerometerHandler.getLatestReadingsAtIndex(i);
+                final String line = latestReadings[0] + "," + latestReadings[1] + "," + latestReadings[2];
+                writer.println(line);
+            }
+        } catch (IOException e) {
+            throw new Error("File could not be created!!");
+        } finally {
+            if (writer != null) {
+                writer.close();
+            }
+        }
     }
 }

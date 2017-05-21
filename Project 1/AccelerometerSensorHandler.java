@@ -9,7 +9,18 @@ import java.util.Locale;
 
 class AccelerometerSensorHandler implements SensorEventListener {
 
+    private static final int DIMENSIONS = 3;
+    private static final int SAVE_HISTORY = 100;
+    static final int NEWEST_INDEX = SAVE_HISTORY - 1;
+    static final int OLDEST_INDEX = 0;
+
     private final TextView text;
+
+    private float[][] latestReadings = new float[DIMENSIONS][SAVE_HISTORY];
+
+    private float xCurrent;
+    private float yCurrent;
+    private float zCurrent;
 
     private float xHighest;
     private float yHighest;
@@ -24,22 +35,28 @@ class AccelerometerSensorHandler implements SensorEventListener {
     }
 
     public void onSensorChanged(SensorEvent eventInfo) {
-        final float xCurrent = eventInfo.values[0];
-        final float yCurrent = eventInfo.values[1];
-        final float zCurrent = eventInfo.values[2];
+        xCurrent = eventInfo.values[0];
+        yCurrent = eventInfo.values[1];
+        zCurrent = eventInfo.values[2];
+        setLatestReading(xCurrent, yCurrent, zCurrent);
         setHistoricalHigh(xCurrent, yCurrent, zCurrent);
+        setDisplayText();
+    }
+
+    void resetHistoricalHigh() {
+        xHighest = xCurrent;
+        yHighest = yCurrent;
+        zHighest = zCurrent;
+        setDisplayText();
+    }
+
+    private void setDisplayText() {
         final String currentReading = "\n   Accelerometer Reading:\n        "
                 + String.format(Locale.US, "(%.2f, %.2f, %.2f)", xCurrent, yCurrent, zCurrent);
         final String historicalHighReading = "\n\n   Highest Accelerometer Reading:\n        "
                 + String.format(Locale.US, "(%.2f, %.2f, %.2f)", xHighest, yHighest, zHighest);
         final String reading = currentReading + historicalHighReading;
         text.setText(reading);
-    }
-
-    void resetHistoricalHigh() {
-        xHighest = 0;
-        yHighest = 0;
-        zHighest = 0;
     }
 
     private void setHistoricalHigh(float x, float y, float z) {
@@ -52,5 +69,20 @@ class AccelerometerSensorHandler implements SensorEventListener {
         if (Math.abs(z) > Math.abs(zHighest)) {
             zHighest = z;
         }
+    }
+
+    private void setLatestReading(float x, float y, float z) {
+        for (int i = OLDEST_INDEX; i < NEWEST_INDEX; i++) {
+            latestReadings[0][i] = latestReadings[0][i + 1];
+            latestReadings[1][i] = latestReadings[1][i + 1];
+            latestReadings[2][i] = latestReadings[2][i + 1];
+        }
+        latestReadings[0][NEWEST_INDEX] = x;
+        latestReadings[1][NEWEST_INDEX] = y;
+        latestReadings[2][NEWEST_INDEX] = z;
+    }
+
+    float[] getLatestReadingsAtIndex(int index) {
+        return new float[]{latestReadings[0][index], latestReadings[1][index], latestReadings[2][index]};
     }
 }
