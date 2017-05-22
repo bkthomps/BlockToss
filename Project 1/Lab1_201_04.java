@@ -14,12 +14,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
-import java.util.List;
 
 import ca.uwaterloo.sensortoy.LineGraphView;
 
 public class Lab1_201_04 extends AppCompatActivity {
-
+    LineGraphView graph;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Set up basics
@@ -29,18 +28,12 @@ public class Lab1_201_04 extends AppCompatActivity {
         // Create layout
         final LinearLayout layout = (LinearLayout) findViewById(R.id.layout);
 
-        // Create graph
-        createBufferSpace(layout);
-        final int samplesToKeep = 100;
-        final List<String> listOfLabels = Arrays.asList("x", "y", "z");
-        final LineGraphView graph = new LineGraphView(getApplicationContext(), samplesToKeep, listOfLabels);
+        // Create handles
+        graph = new LineGraphView(getApplicationContext(),100, Arrays.asList("x","y","z"));
         layout.addView(graph);
         graph.setVisibility(View.VISIBLE);
-
-        // Create handles
-        createBufferSpace(layout);
         final Button resetHistoricalHigh = createButtonHandleProperties(layout, "Reset Historical High Readings");
-        createBufferSpace(layout);
+        final TextView bufferSpace = createTextHandleProperties(layout, "");
         final Button saveAccelerometerData = createButtonHandleProperties(layout, "Save Accelerometer Data");
         final TextView lightHandle = createTextHandleProperties(layout, "lightLabel");
         final TextView accelerometerHandle = createTextHandleProperties(layout, "accelerometerLabel");
@@ -49,7 +42,7 @@ public class Lab1_201_04 extends AppCompatActivity {
 
         // Create handlers
         final LightSensorHandler lightHandler = new LightSensorHandler(lightHandle);
-        final AccelerometerSensorHandler accelerometerHandler = new AccelerometerSensorHandler(accelerometerHandle, graph);
+        final AccelerometerSensorHandler accelerometerHandler = new AccelerometerSensorHandler(accelerometerHandle,graph);
         final MagneticFieldSensorHandler magneticFieldHandler = new MagneticFieldSensorHandler(magneticFieldHandle);
         final RotationVectorSensorHandler rotationVectorHandler = new RotationVectorSensorHandler(rotationVectorHandle);
 
@@ -86,10 +79,6 @@ public class Lab1_201_04 extends AppCompatActivity {
         });
     }
 
-    private void createBufferSpace(LinearLayout layout) {
-        createTextHandleProperties(layout, "");
-    }
-
     private TextView createTextHandleProperties(LinearLayout layout, String label) {
         final int TEXT_SIZE = 20;
         final TextView handle = new TextView(getApplicationContext());
@@ -107,8 +96,7 @@ public class Lab1_201_04 extends AppCompatActivity {
         layout.addView(handle);
         handle.setTextSize(TEXT_SIZE);
         handle.setTextColor(Color.BLACK);
-        final int lightBlue = Color.rgb(66, 152, 244);
-        handle.setBackgroundColor(lightBlue);
+        handle.setBackgroundColor(Color.rgb(66, 152, 244));
         return handle;
     }
 
