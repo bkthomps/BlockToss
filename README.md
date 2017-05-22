@@ -3,6 +3,11 @@ Projects which relate to the course ECE 155.
 
 This repository should be private, and the only ones able to access it being Bailey, Charles, and Richard. If this is not the case, please let one of us know.
 
+Work Distribution:
+1. Go to the "Issues" section at the top of the repository page and click on it.
+2. When a project is started, each group member will be assigned tasks and an issue will be made in that section.
+3. When you finish the task, click on the issue, write a comment such as "Fixed", and click the "Comment and Close" button.
+
 Commit Standard:
 1. GitHub shall be used as the version control. SubVersion shall be used as the final dropbox.
 2. When your changes are done, copy and paste your .java files and your single .xml file into a folder on your desktop.
@@ -12,6 +17,7 @@ Commit Standard:
 6. Create a commit message which is meaningful so other members of the group know what you committed. Be sure to write it in third-person present tense.
 7. Right under the commit message, click the "create a new branch for this commit and start a pull request" button.
 8. Right under the last button, click the green "propose file change" button and wait for GitHub to finish.
+9. Create a pull request. Afterwards, if someone approves the review, you will be able to rebase and merge.
 
 Coding Standard:
 1. Classes use PascalCase.
