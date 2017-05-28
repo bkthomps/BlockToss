@@ -151,7 +151,7 @@ public class Lab1_201_04 extends AppCompatActivity {
      */
     void saveReadings(AccelerometerSensorHandler accelerometerHandler) {
         final long currentNanoTime = System.nanoTime();
-        final String fileName = "accelerometerReadings_nanoTime_" + currentNanoTime + ".csv";
+        final String fileName = "data_" + currentNanoTime + ".csv";
         createFile(fileName, accelerometerHandler);
     }
 
