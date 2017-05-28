@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import ca.uwaterloo.sensortoy.LineGraphView;
@@ -150,9 +151,38 @@ public class Lab1_201_04 extends AppCompatActivity {
      * @param accelerometerHandler handler of accelerometer sensor
      */
     void saveReadings(AccelerometerSensorHandler accelerometerHandler) {
-        final long currentNanoTime = System.nanoTime();
-        final String fileName = "data_" + currentNanoTime + ".csv";
+        final String fileName = "data_" + getDate() + ".csv";
         createFile(fileName, accelerometerHandler);
+    }
+
+    /**
+     * Gets current date as a string.
+     *
+     * @return current date as a string
+     */
+    private String getDate() {
+        final Calendar calendar = Calendar.getInstance();
+        final int year = calendar.get(Calendar.YEAR);
+        final int monthIndex = calendar.get(Calendar.MONTH);
+        final String month = monthIndexToAbbreviation(monthIndex);
+        final int day = calendar.get(Calendar.DAY_OF_MONTH);
+        final int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        final int minute = calendar.get(Calendar.MINUTE);
+        final int second = calendar.get(Calendar.SECOND);
+        final int milliSecond = calendar.get(Calendar.MILLISECOND);
+        return year + "_" + month + "_" + day + "_" + hour + "_" + minute + "_" + second + "_" + milliSecond;
+    }
+
+    /**
+     * Converts month index to abbreviation.
+     *
+     * @param index index of month from 0 to 11
+     * @return abbreviation of month from "jan" to "dec"
+     */
+    private String monthIndexToAbbreviation(int index) {
+        final String[] months =
+                new String[]{"jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"};
+        return months[index];
     }
 
     /**
