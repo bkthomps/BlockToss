@@ -84,6 +84,7 @@ public class Lab1_201_04 extends AppCompatActivity {
             public void onClick(View v) {
                 lightHandler.resetHistoricalHigh();
                 accelerometerHandler.resetHistoricalHigh();
+                graph.purge();
                 magneticFieldHandler.resetHistoricalHigh();
                 rotationVectorHandler.resetHistoricalHigh();
             }
