@@ -60,7 +60,8 @@ public class Lab1_201_04 extends AppCompatActivity {
 
         // Create handlers
         final LightSensorHandler lightHandler = new LightSensorHandler(lightHandle);
-        final AccelerometerSensorHandler accelerometerHandler = new AccelerometerSensorHandler(accelerometerHandle, graph);
+        final AccelerometerSensorHandler accelerometerHandler =
+                new AccelerometerSensorHandler(accelerometerHandle, graph);
         final MagneticFieldSensorHandler magneticFieldHandler = new MagneticFieldSensorHandler(magneticFieldHandle);
         final RotationVectorSensorHandler rotationVectorHandler = new RotationVectorSensorHandler(rotationVectorHandle);
 
