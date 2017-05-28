@@ -5,6 +5,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -26,6 +27,8 @@ import ca.uwaterloo.sensortoy.LineGraphView;
  * reading data. Used to save to file.
  */
 public class Lab1_201_04 extends AppCompatActivity {
+
+    private static final String APP_NAME = "Lab1_201_04";
 
     /**
      * Called when app starts to initialize components.
@@ -194,7 +197,7 @@ public class Lab1_201_04 extends AppCompatActivity {
     private void createFile(String fileName, AccelerometerSensorHandler accelerometerHandler) {
         PrintWriter writer = null;
         try {
-            final File fileHandle = new File(getExternalFilesDir("Lab1_201_04"), fileName);
+            final File fileHandle = new File(getExternalFilesDir(APP_NAME), fileName);
             writer = new PrintWriter(fileHandle);
             for (int i = AccelerometerSensorHandler.OLDEST_INDEX; i <= AccelerometerSensorHandler.NEWEST_INDEX; i++) {
                 final float[] latestReadings = accelerometerHandler.getLatestReadingsAtIndex(i);
@@ -202,7 +205,7 @@ public class Lab1_201_04 extends AppCompatActivity {
                 writer.println(line);
             }
         } catch (IOException e) {
-            throw new Error("File could not be created!!");
+            Log.wtf(APP_NAME, "File could not be created!!");
         } finally {
             if (writer != null) {
                 writer.close();
