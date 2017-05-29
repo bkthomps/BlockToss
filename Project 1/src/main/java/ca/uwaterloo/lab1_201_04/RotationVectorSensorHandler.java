@@ -33,7 +33,7 @@ class RotationVectorSensorHandler implements SensorEventListener {
     /**
      * Sets current data to data from sensor readings.
      *
-     * @param eventInfo array with acceleration information, x-coordinate is index 0, y-coordinate is index 1, and
+     * @param eventInfo array with rotation vector information, x-coordinate is index 0, y-coordinate is index 1, and
      *                  z-coordinate is index 2
      */
     public void onSensorChanged(SensorEvent eventInfo) {
