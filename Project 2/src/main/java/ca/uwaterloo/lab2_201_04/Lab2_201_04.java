@@ -6,6 +6,7 @@ import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -28,7 +29,7 @@ import ca.uwaterloo.sensortoy.LineGraphView;
  */
 public class Lab2_201_04 extends AppCompatActivity {
 
-    private static final String APP_NAME = "Lab1_201_04";
+    private static final String APP_NAME = "Lab2_201_04";
 
     /**
      * Called when app starts to initialize components.
@@ -55,24 +56,14 @@ public class Lab2_201_04 extends AppCompatActivity {
         // Create handles
         createBufferSpace(layout);
         final Button saveAccelerometerData = createButtonHandleProperties(layout, "Save Accelerometer Data");
-        final TextView direction = createTextHandleProperties(layout, "direction");
+        final TextView direction = createTextHandleProperties(layout, "direction", 50);
+        direction.setGravity(Gravity.CENTER_HORIZONTAL);
 
-        // Create handlers
+        // Start acceleration monitoring
         final AccelerometerSensorHandler accelerometerHandler = new AccelerometerSensorHandler(direction, graph);
-
-        // Get instance of sensor manager
         final SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-
-        // Get default sensors
-        final Sensor lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
-        final Sensor accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        final Sensor magneticFieldSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-        final Sensor rotationVectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
-
-        // Attach sensors to sensor manager
-        sensorManager.registerListener(accelerometerHandler, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
-
-        // Initialize button
+        final Sensor accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+        sensorManager.registerListener(accelerometerHandler, accelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
         saveAccelerometerData.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 saveReadings(accelerometerHandler);
@@ -86,7 +77,7 @@ public class Lab2_201_04 extends AppCompatActivity {
      * @param layout layout manager which determines order of placing components
      */
     private void createBufferSpace(LinearLayout layout) {
-        createTextHandleProperties(layout, "");
+        createTextHandleProperties(layout, "", 20);
     }
 
     /**
@@ -96,12 +87,11 @@ public class Lab2_201_04 extends AppCompatActivity {
      * @param label  text which will be on the text component
      * @return text handle which was created
      */
-    private TextView createTextHandleProperties(LinearLayout layout, String label) {
-        final int TEXT_SIZE = 20;
+    private TextView createTextHandleProperties(LinearLayout layout, String label, int textSize) {
         final TextView handle = new TextView(getApplicationContext());
         handle.setText(label);
         layout.addView(handle);
-        handle.setTextSize(TEXT_SIZE);
+        handle.setTextSize(textSize);
         handle.setTextColor(Color.BLACK);
         return handle;
     }

@@ -1,7 +1,7 @@
 /**
  * Android app which displays accelerometer direction.
  * <p>
- * TODO: add description
+ * Displays an acceleration graph, as well as displays the direction of motion. Also, user can save acceleration data.
  *
  * @see ca.uwaterloo.sensortoy.LineGraphView
  */

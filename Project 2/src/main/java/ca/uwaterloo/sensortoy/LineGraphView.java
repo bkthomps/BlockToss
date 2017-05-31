@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.View;
@@ -43,14 +44,18 @@ public class LineGraphView extends View {
 
     private final Paint graphPaint = new Paint();
 
-    private static final int WIDTH = 400;
-    private static final int HEIGHT = 400;
+    private static final int WIDTH = getScreenWidth();
+    private static final int HEIGHT = 800;
     private static final int AXIS_WIDTH = 100;
 
     private float xScale;
     private float yScale;
     private final int maxDataWidth;
     private final List<String> labels;
+
+    private static int getScreenWidth() {
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
+    }
 
     /**
      * @param context   The application context. You can get your application context by calling
