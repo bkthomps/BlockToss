@@ -17,7 +17,8 @@ Commit Standard:
 6. Create a commit message which is meaningful so other members of the group know what you committed. Be sure to write it in third-person present tense.
 7. Right under the commit message, click the "create a new branch for this commit and start a pull request" button.
 8. Right under the last button, click the green "propose file change" button and wait for GitHub to finish.
-9. Create a pull request. Afterwards, if someone approves the review, you will be able to rebase and merge.
+9. Create a pull request. Afterwards, if someone approves the review, you will be able to squash and merge.
+10. When squashing and merging, enter the commit message that you created in previous steps, with modifications if needed.
 
 Coding Standard:
 1. Classes use PascalCase.
