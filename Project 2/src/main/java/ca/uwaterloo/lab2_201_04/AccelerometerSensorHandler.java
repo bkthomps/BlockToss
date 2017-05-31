@@ -5,6 +5,9 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ca.uwaterloo.sensortoy.LineGraphView;
 
 /**
@@ -19,13 +22,17 @@ class AccelerometerSensorHandler implements SensorEventListener {
 
     private final LineGraphView graph;
 
-    private float[][] latestReadings = new float[DIMENSIONS][SAVE_HISTORY];
+    private final List<Float[]> latestReadings = new ArrayList<>();
 
     private float xFiltered;
     private float yFiltered;
     private float zFiltered;
 
     AccelerometerSensorHandler(TextView direction, LineGraphView graph) {
+        for (int i = 0; i < SAVE_HISTORY; i++) {
+            latestReadings.add(new Float[DIMENSIONS]);
+        }
+
         final String directionText = "\nUndefined";
         direction.setText(directionText);
         this.graph = graph;
@@ -47,7 +54,7 @@ class AccelerometerSensorHandler implements SensorEventListener {
         yFiltered += (eventInfo.values[1] - yFiltered) / FILTER_LEVEL;
         zFiltered += (eventInfo.values[2] - zFiltered) / FILTER_LEVEL;
 
-        setLatestReading(xFiltered, yFiltered, zFiltered);
+        setLatestReadings(xFiltered, yFiltered, zFiltered);
         graph.addPoint(xFiltered, yFiltered, zFiltered);
     }
 
@@ -59,15 +66,13 @@ class AccelerometerSensorHandler implements SensorEventListener {
      * @param y the current y-coordinate
      * @param z the current z-coordinate
      */
-    private void setLatestReading(float x, float y, float z) {
-        for (int i = OLDEST_INDEX; i < NEWEST_INDEX; i++) {
-            latestReadings[0][i] = latestReadings[0][i + 1];
-            latestReadings[1][i] = latestReadings[1][i + 1];
-            latestReadings[2][i] = latestReadings[2][i + 1];
+    private void setLatestReadings(float x, float y, float z) {
+        latestReadings.remove(OLDEST_INDEX);
+        final Float[] dataPoint = {x, y, z};
+        latestReadings.add(NEWEST_INDEX, dataPoint);
+        if (latestReadings.size() != SAVE_HISTORY) {
+            Lab2_201_04.errorPanic("latest readings size is incorrect", "AccelerometerSensorHandler.setLatestReadings");
         }
-        latestReadings[0][NEWEST_INDEX] = x;
-        latestReadings[1][NEWEST_INDEX] = y;
-        latestReadings[2][NEWEST_INDEX] = z;
     }
 
     /**
@@ -76,7 +81,7 @@ class AccelerometerSensorHandler implements SensorEventListener {
      * @param index represents how long ago the data was collected
      * @return the data of all three coordinates for the respective index
      */
-    float[] getLatestReadingsAtIndex(int index) {
-        return new float[]{latestReadings[0][index], latestReadings[1][index], latestReadings[2][index]};
+    Float[] getLatestReadingsAtIndex(int index) {
+        return latestReadings.get(index);
     }
 }
