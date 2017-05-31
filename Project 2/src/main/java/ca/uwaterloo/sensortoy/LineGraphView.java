@@ -176,6 +176,18 @@ public class LineGraphView extends View {
     }
 
     /**
+     * Adds a set of data for the next x value.
+     *
+     * @param x the x-coordinate
+     * @param y the y-coordinate
+     * @param z the z-coordinate
+     */
+    public void addPoint(float x, float y, float z) {
+        final float[] point = new float[]{x, y, z};
+        addPoint(point);
+    }
+
+    /**
      * Clears all the data from the graph.
      */
     public void purge() {

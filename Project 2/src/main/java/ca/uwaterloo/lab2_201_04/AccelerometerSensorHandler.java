@@ -21,9 +21,9 @@ class AccelerometerSensorHandler implements SensorEventListener {
 
     private float[][] latestReadings = new float[DIMENSIONS][SAVE_HISTORY];
 
-    private float xFiltered = 0;
-    private float yFiltered = 0;
-    private float zFiltered = 0;
+    private float xFiltered;
+    private float yFiltered;
+    private float zFiltered;
 
     AccelerometerSensorHandler(TextView direction, LineGraphView graph) {
         final String directionText = "\nUndefined";
@@ -43,12 +43,12 @@ class AccelerometerSensorHandler implements SensorEventListener {
      */
     public void onSensorChanged(SensorEvent eventInfo) {
         final int FILTER_LEVEL = 100;
-        xFiltered += (eventInfo.values[0] - xFiltered)/FILTER_LEVEL;
-        yFiltered += (eventInfo.values[1] - yFiltered)/FILTER_LEVEL;
-        zFiltered += (eventInfo.values[2] - zFiltered)/FILTER_LEVEL;
+        xFiltered += (eventInfo.values[0] - xFiltered) / FILTER_LEVEL;
+        yFiltered += (eventInfo.values[1] - yFiltered) / FILTER_LEVEL;
+        zFiltered += (eventInfo.values[2] - zFiltered) / FILTER_LEVEL;
 
         setLatestReading(xFiltered, yFiltered, zFiltered);
-        graph.addPoint(new float[]{xFiltered, yFiltered, zFiltered});
+        graph.addPoint(xFiltered, yFiltered, zFiltered);
     }
 
     /**
