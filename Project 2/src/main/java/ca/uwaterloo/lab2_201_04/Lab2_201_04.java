@@ -167,16 +167,37 @@ public class Lab2_201_04 extends AppCompatActivity {
             final File fileHandle = new File(getExternalFilesDir(APP_NAME), fileName);
             writer = new PrintWriter(fileHandle);
             for (int i = AccelerometerSensorHandler.OLDEST_INDEX; i <= AccelerometerSensorHandler.NEWEST_INDEX; i++) {
-                final float[] latestReadings = accelerometerHandler.getLatestReadingsAtIndex(i);
-                final String line = latestReadings[0] + "," + latestReadings[1] + "," + latestReadings[2];
+                final Float[] reading = accelerometerHandler.getLatestReadingsAtIndex(i);
+                final String line = reading[0] + "," + reading[1] + "," + reading[2];
                 writer.println(line);
             }
         } catch (IOException e) {
-            Log.wtf(APP_NAME, "File could not be created!!");
+            errorNonFatal("file could not be created", "Lab2_201_04.createFile");
         } finally {
             if (writer != null) {
                 writer.close();
             }
         }
+    }
+
+    /**
+     * Called when a serious error occurs and the program needs to be terminated.
+     *
+     * @param error    error message
+     * @param location location in code in which error comes from
+     */
+    static void errorPanic(String error, String location) {
+        Log.wtf(APP_NAME, "Panic Error in " + location + ": " + error + "!!");
+        System.exit(-1);
+    }
+
+    /**
+     * Called when an error occurs, but is not serious enough to terminate the program.
+     *
+     * @param error    error message
+     * @param location location in code in which error comes from
+     */
+    static void errorNonFatal(String error, String location) {
+        Log.e(APP_NAME, "Non-Fatal Error in " + location + ": " + error + "!!");
     }
 }
