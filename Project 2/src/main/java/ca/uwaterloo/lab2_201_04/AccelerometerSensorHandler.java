@@ -15,7 +15,6 @@ import ca.uwaterloo.sensortoy.LineGraphView;
  */
 class AccelerometerSensorHandler implements SensorEventListener {
 
-    private static final int DIMENSIONS = 3;
     private static final int SAVE_HISTORY = 100;
     static final int NEWEST_INDEX = SAVE_HISTORY - 1;
     static final int OLDEST_INDEX = 0;
@@ -30,7 +29,7 @@ class AccelerometerSensorHandler implements SensorEventListener {
 
     AccelerometerSensorHandler(TextView direction, LineGraphView graph) {
         for (int i = 0; i < SAVE_HISTORY; i++) {
-            latestReadings.add(new Float[DIMENSIONS]);
+            latestReadings.add(new Float[]{0F, 0F, 0F});
         }
 
         final String directionText = "\nUndefined";
