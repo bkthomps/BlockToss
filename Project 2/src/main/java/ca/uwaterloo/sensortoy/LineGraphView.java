@@ -40,7 +40,7 @@ public class LineGraphView extends View {
     private List<Paint> linePaints = new ArrayList<>();
 
     public final int[] defaultColors =
-            {0xffff0000, 0xff00ff00, 0xff0000ff, 0xff000000, 0xffffff00, 0xffff00ff, 0xff00ffff};
+            {0xffff0000, 0xff0000ff, 0xff00ff00, 0xff000000, 0xffffff00, 0xffff00ff, 0xff00ffff};
 
     private final Paint graphPaint = new Paint();
 

@@ -60,7 +60,7 @@ class AccelerometerSensorHandler implements SensorEventListener {
         final float yCurrent = removeUnderThreshHold(eventInfo.values[1], DATA_THRESH_HOLD);
         final float zCurrent = removeUnderThreshHold(eventInfo.values[2], DATA_THRESH_HOLD);
 
-        final int FILTER_LEVEL = 50;
+        final int FILTER_LEVEL = 30;
         xFiltered += (xCurrent - xFiltered) / FILTER_LEVEL;
         yFiltered += (yCurrent - yFiltered) / FILTER_LEVEL;
         zFiltered += (zCurrent - zFiltered) / FILTER_LEVEL;
