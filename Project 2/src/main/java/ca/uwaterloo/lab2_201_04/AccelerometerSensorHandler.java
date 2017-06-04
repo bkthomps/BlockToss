@@ -109,8 +109,16 @@ class AccelerometerSensorHandler implements SensorEventListener {
                 yGraph[i] = data[1];
                 i++;
             }
-            //TODO: tell user if UP or DOWN
-            direction.setText("Y");
+            final List<Float> yData = getGraph(yGraph);
+            final int firstIndex = (int) (0.1 * yData.size());
+            final int lastIndex = (int) (0.9 * yData.size());
+            if (yData.get(firstIndex) > 0 && yData.get(lastIndex) < 0) {
+                final String UP = "UP";
+                direction.setText(UP);
+            } else if (yData.get(firstIndex) < 0 && yData.get(lastIndex) > 0) {
+                final String DOWN = "DOWN";
+                direction.setText(DOWN);
+            }
         } else if (isXLastDominant) {
             final Float[] xGraph = new Float[latestReadings.size()];
             int i = 0;
@@ -118,9 +126,36 @@ class AccelerometerSensorHandler implements SensorEventListener {
                 xGraph[i] = data[0];
                 i++;
             }
-            //TODO: tell user if RIGHT or LEFT
-            direction.setText("X");
+            final List<Float> xData = getGraph(xGraph);
+            final int firstIndex = (int) (0.1 * xData.size());
+            final int lastIndex = (int) (0.9 * xData.size());
+            if (xData.get(firstIndex) > 0 && xData.get(lastIndex) < 0) {
+                final String RIGHT = "RIGHT";
+                direction.setText(RIGHT);
+            } else if (xData.get(firstIndex) < 0 && xData.get(lastIndex) > 0) {
+                final String LEFT = "LEFT";
+                direction.setText(LEFT);
+            }
         }
+    }
+
+    private List<Float> getGraph(Float[] data) {
+        final int lastIndex = data.length - 1;
+        int firstIndex = -1;
+        for (int i = lastIndex; firstIndex == -1; i--) {
+            if (i >= 2) {
+                if (data[i] == 0 && data[i - 1] == 0 && data[i - 2] == 0) {
+                    firstIndex = i;
+                }
+            } else {
+                firstIndex = 0;
+            }
+        }
+        final List<Float> graph = new ArrayList<>();
+        for (int i = firstIndex; i < lastIndex; i++) {
+            graph.add(data[i]);
+        }
+        return graph;
     }
 
     /**
