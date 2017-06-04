@@ -21,19 +21,26 @@ class AccelerometerSensorHandler implements SensorEventListener {
 
     private final LineGraphView graph;
 
+    private final TextView direction;
     private final List<Float[]> latestReadings = new ArrayList<>();
 
     private float xFiltered;
     private float yFiltered;
     private float zFiltered;
 
+    private boolean isXDominant;
+    private boolean isYDominant;
+    private boolean isXLastDominant;
+    private boolean isYLastDominant;
+
     AccelerometerSensorHandler(TextView direction, LineGraphView graph) {
         for (int i = 0; i < SAVE_HISTORY; i++) {
             latestReadings.add(new Float[]{0F, 0F, 0F});
         }
 
-        final String directionText = "\nUndefined";
+        final String directionText = "\nNONE";
         direction.setText(directionText);
+        this.direction = direction;
         this.graph = graph;
     }
 
@@ -48,13 +55,72 @@ class AccelerometerSensorHandler implements SensorEventListener {
      *                  z-coordinate is index 2
      */
     public void onSensorChanged(SensorEvent eventInfo) {
-        final int FILTER_LEVEL = 100;
-        xFiltered += (eventInfo.values[0] - xFiltered) / FILTER_LEVEL;
-        yFiltered += (eventInfo.values[1] - yFiltered) / FILTER_LEVEL;
-        zFiltered += (eventInfo.values[2] - zFiltered) / FILTER_LEVEL;
+        final float DATA_THRESH_HOLD = 0.5F;
+        final float xCurrent = removeUnderThreshHold(eventInfo.values[0], DATA_THRESH_HOLD);
+        final float yCurrent = removeUnderThreshHold(eventInfo.values[1], DATA_THRESH_HOLD);
+        final float zCurrent = removeUnderThreshHold(eventInfo.values[2], DATA_THRESH_HOLD);
+
+        final int FILTER_LEVEL = 50;
+        xFiltered += (xCurrent - xFiltered) / FILTER_LEVEL;
+        yFiltered += (yCurrent - yFiltered) / FILTER_LEVEL;
+        zFiltered += (zCurrent - zFiltered) / FILTER_LEVEL;
+
+        final float FILTER_THRESH_HOLD = 0.15F;
+        xFiltered = removeUnderThreshHold(xFiltered, FILTER_THRESH_HOLD);
+        yFiltered = removeUnderThreshHold(yFiltered, FILTER_THRESH_HOLD);
+        zFiltered = removeUnderThreshHold(zFiltered, FILTER_THRESH_HOLD);
+
+        determineDominantCoordinate();
 
         setLatestReadings(xFiltered, yFiltered, zFiltered);
         graph.addPoint(xFiltered, yFiltered, zFiltered);
+    }
+
+    private float removeUnderThreshHold(float val, float threshHold) {
+        return (Math.abs(val) < threshHold) ? 0 : val;
+    }
+
+    private void determineDominantCoordinate() {
+        zFiltered = 0;
+        if (xFiltered == 0 && yFiltered == 0) {
+            analyzeGraph();
+            isXDominant = false;
+            isYDominant = false;
+            isXLastDominant = false;
+            isYLastDominant = false;
+        } else if (isXDominant || (!isYDominant && Math.abs(xFiltered) > Math.abs(yFiltered))) {
+            isXDominant = true;
+            isXLastDominant = true;
+            isYLastDominant = false;
+            yFiltered = 0;
+        } else {
+            isYDominant = true;
+            isYLastDominant = true;
+            isXLastDominant = false;
+            xFiltered = 0;
+        }
+    }
+
+    private void analyzeGraph() {
+        if (isYLastDominant) {
+            final Float[] yGraph = new Float[latestReadings.size()];
+            int i = 0;
+            for (Float[] data : latestReadings) {
+                yGraph[i] = data[1];
+                i++;
+            }
+            //TODO: tell user if UP or DOWN
+            direction.setText("Y");
+        } else if (isXLastDominant) {
+            final Float[] xGraph = new Float[latestReadings.size()];
+            int i = 0;
+            for (Float[] data : latestReadings) {
+                xGraph[i] = data[0];
+                i++;
+            }
+            //TODO: tell user if RIGHT or LEFT
+            direction.setText("X");
+        }
     }
 
     /**
