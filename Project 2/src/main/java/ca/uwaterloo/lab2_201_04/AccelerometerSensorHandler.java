@@ -61,9 +61,10 @@ class AccelerometerSensorHandler implements SensorEventListener {
         final float zCurrent = removeUnderThreshHold(eventInfo.values[2], DATA_THRESH_HOLD);
 
         final int FILTER_LEVEL = 30;
-        xFiltered += (xCurrent - xFiltered) / FILTER_LEVEL;
-        yFiltered += (yCurrent - yFiltered) / FILTER_LEVEL;
-        zFiltered += (zCurrent - zFiltered) / FILTER_LEVEL;
+        final float KEEP_OLD_FILTER = 0.6F;
+        xFiltered = xFiltered * KEEP_OLD_FILTER + (xCurrent - xFiltered) / FILTER_LEVEL;
+        yFiltered = yFiltered * KEEP_OLD_FILTER + (yCurrent - yFiltered) / FILTER_LEVEL;
+        zFiltered = zFiltered * KEEP_OLD_FILTER + (zCurrent - zFiltered) / FILTER_LEVEL;
 
         final float FILTER_THRESH_HOLD = 0.15F;
         xFiltered = removeUnderThreshHold(xFiltered, FILTER_THRESH_HOLD);
@@ -110,13 +111,17 @@ class AccelerometerSensorHandler implements SensorEventListener {
                 i++;
             }
             final List<Float> yData = getGraph(yGraph);
-            final int firstIndex = (int) (0.1 * yData.size());
-            final int lastIndex = (int) (0.9 * yData.size());
+            final int size = yData.size();
+            if (size < 5) {
+                return;
+            }
+            final int firstIndex = (int) (0.1 * size);
+            final int lastIndex = (int) (0.9 * size);
             if (yData.get(firstIndex) > 0 && yData.get(lastIndex) < 0) {
-                final String UP = "UP";
+                final String UP = "\nUP";
                 direction.setText(UP);
             } else if (yData.get(firstIndex) < 0 && yData.get(lastIndex) > 0) {
-                final String DOWN = "DOWN";
+                final String DOWN = "\nDOWN";
                 direction.setText(DOWN);
             }
         } else if (isXLastDominant) {
@@ -127,13 +132,17 @@ class AccelerometerSensorHandler implements SensorEventListener {
                 i++;
             }
             final List<Float> xData = getGraph(xGraph);
-            final int firstIndex = (int) (0.1 * xData.size());
-            final int lastIndex = (int) (0.9 * xData.size());
+            final int size = xData.size();
+            if (size < 5) {
+                return;
+            }
+            final int firstIndex = (int) (0.1 * size);
+            final int lastIndex = (int) (0.9 * size);
             if (xData.get(firstIndex) > 0 && xData.get(lastIndex) < 0) {
-                final String RIGHT = "RIGHT";
+                final String RIGHT = "\nRIGHT";
                 direction.setText(RIGHT);
             } else if (xData.get(firstIndex) < 0 && xData.get(lastIndex) > 0) {
-                final String LEFT = "LEFT";
+                final String LEFT = "\nLEFT";
                 direction.setText(LEFT);
             }
         }
