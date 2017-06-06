@@ -77,10 +77,20 @@ class AccelerometerSensorHandler implements SensorEventListener {
         graph.addPoint(xFiltered, yFiltered, zFiltered);
     }
 
+    /**
+     * If value is under specified thresh hold, it shall become 0.
+     *
+     * @param val        value
+     * @param threshHold thresh hold to compare value to
+     * @return value if more than thresh hold, else 0
+     */
     private float removeUnderThreshHold(float val, float threshHold) {
         return (Math.abs(val) < threshHold) ? 0 : val;
     }
 
+    /**
+     * Determines whether the dominant coordinate is x or y, that is horizontal or vertical.
+     */
     private void determineDominantCoordinate() {
         zFiltered = 0;
         if (xFiltered == 0 && yFiltered == 0) {
@@ -102,6 +112,9 @@ class AccelerometerSensorHandler implements SensorEventListener {
         }
     }
 
+    /**
+     * Determines if the motion is up, down, right, or left.
+     */
     private void analyzeGraph() {
         if (isYLastDominant) {
             final Float[] yGraph = new Float[latestReadings.size()];
@@ -148,6 +161,12 @@ class AccelerometerSensorHandler implements SensorEventListener {
         }
     }
 
+    /**
+     * Takes in a graph and determines the pattern associated with hand motion.
+     *
+     * @param data entire graph fed in
+     * @return graph associated with hand motion
+     */
     private List<Float> getGraph(Float[] data) {
         final int lastIndex = data.length - 1;
         int firstIndex = -1;
