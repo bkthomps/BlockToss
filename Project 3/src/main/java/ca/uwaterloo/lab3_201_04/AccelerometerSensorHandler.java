@@ -3,6 +3,7 @@ package ca.uwaterloo.lab3_201_04;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
+import android.util.Log;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -12,6 +13,8 @@ import java.util.List;
  * Receives and manages accelerometer sensor data readings.
  */
 class AccelerometerSensorHandler implements SensorEventListener {
+
+    private final Grid grid;
 
     private static final int SAVE_HISTORY = 100;
     private static final int NEWEST_INDEX = SAVE_HISTORY - 1;
@@ -29,7 +32,8 @@ class AccelerometerSensorHandler implements SensorEventListener {
     private boolean isXLastDominant;
     private boolean isYLastDominant;
 
-    AccelerometerSensorHandler(TextView direction) {
+    AccelerometerSensorHandler(TextView direction, Grid grid) {
+        this.grid = grid;
         for (int i = 0; i < SAVE_HISTORY; i++) {
             latestReadings.add(new Float[]{0F, 0F, 0F});
         }
@@ -127,9 +131,11 @@ class AccelerometerSensorHandler implements SensorEventListener {
             if (yData.get(firstIndex) > 0 && yData.get(lastIndex) < 0) {
                 final String UP = "UP";
                 direction.setText(UP);
+                grid.moveUp();
             } else if (yData.get(firstIndex) < 0 && yData.get(lastIndex) > 0) {
                 final String DOWN = "DOWN";
                 direction.setText(DOWN);
+                grid.moveDown();
             }
         } else if (isXLastDominant) {
             final Float[] xGraph = new Float[latestReadings.size()];
@@ -148,9 +154,11 @@ class AccelerometerSensorHandler implements SensorEventListener {
             if (xData.get(firstIndex) > 0 && xData.get(lastIndex) < 0) {
                 final String RIGHT = "RIGHT";
                 direction.setText(RIGHT);
+                grid.moveRight();
             } else if (xData.get(firstIndex) < 0 && xData.get(lastIndex) > 0) {
                 final String LEFT = "LEFT";
                 direction.setText(LEFT);
+                grid.moveLeft();
             }
         }
     }
@@ -193,7 +201,7 @@ class AccelerometerSensorHandler implements SensorEventListener {
         final Float[] dataPoint = {x, y, z};
         latestReadings.add(NEWEST_INDEX, dataPoint);
         if (latestReadings.size() != SAVE_HISTORY) {
-            Lab3_201_04.errorPanic("latest readings size is incorrect", "AccelerometerSensorHandler.setLatestReadings");
+            Log.wtf("Error!!", "Error: latest reading data is incorrect!!");
         }
     }
 }
