@@ -1,13 +1,15 @@
 package ca.uwaterloo.lab3_201_04;
 
 import android.graphics.Color;
+import android.graphics.Point;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
-import android.widget.LinearLayout;
+import android.view.Display;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
@@ -31,13 +33,33 @@ public class Lab3_201_04 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lab3_201_04);
 
+        final int gameBoardDimension = gameBoardDimension();
+
         // Create layout
-        final LinearLayout layout = (LinearLayout) findViewById(R.id.layout);
+        final RelativeLayout layout = (RelativeLayout) findViewById(R.id.layout);
+
+        layout.getLayoutParams().width = gameBoardDimension;
+        layout.getLayoutParams().height = gameBoardDimension;
+
+        layout.setBackgroundResource(R.drawable.gameboard);
+
+        final int blocksPerScreen = 4;
+        final int pixelsOfBlock = 130;
+        final int sizeOfBlock = gameBoardDimension / blocksPerScreen;
+
+        final float ratio = (float) sizeOfBlock / (blocksPerScreen * pixelsOfBlock);
+
+        final int BASE_PIXEL = -80;
+
+        final ImageView block = createImageViewProperties(layout);
+        block.setImageResource(R.drawable.gameblock);
+        block.setScaleX(ratio);
+        block.setScaleY(ratio);
+        block.setX(BASE_PIXEL);
+        block.setY(BASE_PIXEL);
 
         // Create handles
-        createBufferSpace(layout);
         final TextView direction = createTextHandleProperties(layout, "direction", 50);
-        direction.setGravity(Gravity.CENTER_HORIZONTAL);
 
         // Start acceleration monitoring
         final AccelerometerSensorHandler accelerometerHandler = new AccelerometerSensorHandler(direction);
@@ -46,13 +68,14 @@ public class Lab3_201_04 extends AppCompatActivity {
         sensorManager.registerListener(accelerometerHandler, accelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
     }
 
-    /**
-     * Used to create space between components.
-     *
-     * @param layout layout manager which determines order of placing components
-     */
-    private void createBufferSpace(LinearLayout layout) {
-        createTextHandleProperties(layout, "", 20);
+    private int gameBoardDimension() {
+        final Display display = getWindowManager().getDefaultDisplay();
+        final Point size = new Point();
+        display.getSize(size);
+        final int BANNER_OFFSET = 300;  // TODO: scale with phone banner size
+        final int width = size.x;
+        final int height = size.y - BANNER_OFFSET;
+        return (width < height) ? width : height;
     }
 
     /**
@@ -62,12 +85,18 @@ public class Lab3_201_04 extends AppCompatActivity {
      * @param label  text which will be on the text component
      * @return text handle which was created
      */
-    private TextView createTextHandleProperties(LinearLayout layout, String label, int textSize) {
+    private TextView createTextHandleProperties(RelativeLayout layout, String label, int textSize) {
         final TextView handle = new TextView(getApplicationContext());
         handle.setText(label);
         layout.addView(handle);
         handle.setTextSize(textSize);
         handle.setTextColor(Color.BLACK);
+        return handle;
+    }
+
+    private ImageView createImageViewProperties(RelativeLayout layout) {
+        final ImageView handle = new ImageView(getApplicationContext());
+        layout.addView(handle);
         return handle;
     }
 

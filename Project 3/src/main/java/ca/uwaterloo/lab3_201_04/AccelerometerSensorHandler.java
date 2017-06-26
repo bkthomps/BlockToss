@@ -34,7 +34,7 @@ class AccelerometerSensorHandler implements SensorEventListener {
             latestReadings.add(new Float[]{0F, 0F, 0F});
         }
 
-        final String directionText = "\nNONE";
+        final String directionText = "NONE";
         direction.setText(directionText);
         this.direction = direction;
     }
@@ -125,10 +125,10 @@ class AccelerometerSensorHandler implements SensorEventListener {
             final int firstIndex = (int) (0.1 * size);
             final int lastIndex = (int) (0.9 * size);
             if (yData.get(firstIndex) > 0 && yData.get(lastIndex) < 0) {
-                final String UP = "\nUP";
+                final String UP = "UP";
                 direction.setText(UP);
             } else if (yData.get(firstIndex) < 0 && yData.get(lastIndex) > 0) {
-                final String DOWN = "\nDOWN";
+                final String DOWN = "DOWN";
                 direction.setText(DOWN);
             }
         } else if (isXLastDominant) {
@@ -146,10 +146,10 @@ class AccelerometerSensorHandler implements SensorEventListener {
             final int firstIndex = (int) (0.1 * size);
             final int lastIndex = (int) (0.9 * size);
             if (xData.get(firstIndex) > 0 && xData.get(lastIndex) < 0) {
-                final String RIGHT = "\nRIGHT";
+                final String RIGHT = "RIGHT";
                 direction.setText(RIGHT);
             } else if (xData.get(firstIndex) < 0 && xData.get(lastIndex) > 0) {
-                final String LEFT = "\nLEFT";
+                final String LEFT = "LEFT";
                 direction.setText(LEFT);
             }
         }
