@@ -74,7 +74,7 @@ class Block {
      * @param yIndex y index
      */
     void moveToIndex(int xIndex, int yIndex) {
-        // TODO: these two checks should be gone in lab 5
+        // TODO: these two checks should be gone in lab 4
         if (xIndex == -1) {
             xIndex = xOld;
         }
@@ -143,6 +143,7 @@ class Block {
     }
 
     int getValue() {
+        // TODO: this is for lab 4
         return value;
     }
 }

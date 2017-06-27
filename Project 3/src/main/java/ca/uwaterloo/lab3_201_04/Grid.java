@@ -62,7 +62,7 @@ class Grid {
 
     /**
      * Moves the single block instance up.
-     * TODO: should be implemented differently for lab 5
+     * TODO: should be implemented differently for lab 4
      *
      * @return if the block can move, the direction
      */
@@ -78,7 +78,7 @@ class Grid {
 
     /**
      * Moves the single block instance down.
-     * TODO: should be implemented differently for lab 5
+     * TODO: should be implemented differently for lab 4
      *
      * @return if the block can move, the direction
      */
@@ -94,7 +94,7 @@ class Grid {
 
     /**
      * Moves the single block instance left.
-     * TODO: should be implemented differently for lab 5
+     * TODO: should be implemented differently for lab 4
      *
      * @return if the block can move, the direction
      */
@@ -110,7 +110,7 @@ class Grid {
 
     /**
      * Moves the single block instance right.
-     * TODO: should be implemented differently for lab 5
+     * TODO: should be implemented differently for lab 4
      *
      * @return if the block can move, the direction
      */
@@ -126,7 +126,7 @@ class Grid {
 
     /**
      * Retrieves the single block instance.
-     * TODO: should be gone by lab 5
+     * TODO: should be gone by lab 4
      *
      * @return the single block instance
      * @throws NullPointerException if forgot to add an instance of a block
