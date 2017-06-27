@@ -129,13 +129,9 @@ class AccelerometerSensorHandler implements SensorEventListener {
             final int firstIndex = (int) (0.1 * size);
             final int lastIndex = (int) (0.9 * size);
             if (yData.get(firstIndex) > 0 && yData.get(lastIndex) < 0) {
-                final String UP = "UP";
-                direction.setText(UP);
-                grid.moveUp();
+                direction.setText(grid.moveUp());
             } else if (yData.get(firstIndex) < 0 && yData.get(lastIndex) > 0) {
-                final String DOWN = "DOWN";
-                direction.setText(DOWN);
-                grid.moveDown();
+                direction.setText(grid.moveDown());
             }
         } else if (isXLastDominant) {
             final Float[] xGraph = new Float[latestReadings.size()];
@@ -152,13 +148,9 @@ class AccelerometerSensorHandler implements SensorEventListener {
             final int firstIndex = (int) (0.1 * size);
             final int lastIndex = (int) (0.9 * size);
             if (xData.get(firstIndex) > 0 && xData.get(lastIndex) < 0) {
-                final String RIGHT = "RIGHT";
-                direction.setText(RIGHT);
-                grid.moveRight();
+                direction.setText(grid.moveRight());
             } else if (xData.get(firstIndex) < 0 && xData.get(lastIndex) > 0) {
-                final String LEFT = "LEFT";
-                direction.setText(LEFT);
-                grid.moveLeft();
+                direction.setText(grid.moveLeft());
             }
         }
     }

@@ -9,10 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
- * Entry point of app.
- * <p>
- * Initializes components which are displayed on the app screen. Initializes accelerometer handler.
- * Used to save to file.
+ * Initializes components which are displayed on the app screen.
  */
 public class Lab3_201_04 extends AppCompatActivity {
 
