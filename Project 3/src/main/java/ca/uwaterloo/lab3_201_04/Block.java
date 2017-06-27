@@ -106,7 +106,7 @@ class Block {
      */
     private void animateBlockMove(final int xIndex, final int yIndex) {
         final int EXECUTE_PERIOD_IN_MILLI_SECONDS = 1;
-        final int PIXEL_CHANGE_ON_ITERATION = 3;
+        final int PIXEL_CHANGE_ON_ITERATION = 5;
         final boolean isPositiveX = xIndex > xOld;
         final boolean isPositiveY = yIndex > yOld;
 
