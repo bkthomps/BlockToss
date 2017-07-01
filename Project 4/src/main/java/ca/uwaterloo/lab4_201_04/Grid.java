@@ -56,6 +56,8 @@ class Grid {
     private void addBlock() {
         if (!isAnyCoordinateFree()) {
             instance.gameLose();
+            timer.cancel();
+            return;
         }
         int xIndex, yIndex;
         do {
@@ -74,8 +76,6 @@ class Grid {
                 }
             }
         }
-        instance.gameLose();
-        timer.cancel();
         return false;
     }
 
