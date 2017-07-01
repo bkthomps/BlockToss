@@ -32,10 +32,14 @@ class Grid {
     private void scheduleTimer() {
         final int BLOCK_APPEAR_RATE = 5000;
         timer.schedule(new TimerTask() {
-
             @Override
             public void run() {
-                addBlock();
+                instance.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        addBlock();
+                    }
+                });
             }
         }, 0, BLOCK_APPEAR_RATE);
     }
