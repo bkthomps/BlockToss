@@ -34,7 +34,7 @@ class Grid {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                instance.runOnUiThread(new Runnable() {
+                instance.runOnUiThread(new TimerTask() {
                     @Override
                     public void run() {
                         addBlock();
