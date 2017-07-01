@@ -4,6 +4,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.RelativeLayout;
 
 /**
@@ -28,5 +29,13 @@ public class Lab4_201_04 extends AppCompatActivity {
         final SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         final Sensor accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         sensorManager.registerListener(accelerometerHandler, accelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
+    }
+
+    void gameWin() {
+        Log.d("You Won!!", "You Won!!");
+    }
+
+    void gameLose() {
+        Log.d("You Lost!!", "You Lost!!");
     }
 }

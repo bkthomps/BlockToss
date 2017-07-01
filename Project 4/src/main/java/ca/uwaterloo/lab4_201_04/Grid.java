@@ -4,6 +4,9 @@ import android.graphics.Point;
 import android.view.Display;
 import android.widget.RelativeLayout;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * The grid that the game 2048 is played on, which contains blocks.
  */
@@ -14,6 +17,7 @@ class Grid {
     private final int blocksPerScreen;
     private final int gameBoardDimension;
     private final Block[][] logicalGrid;
+    private final Timer timer = new Timer();
 
     Grid(Lab4_201_04 instance, RelativeLayout layout, int blocksPerScreen) {
         this.instance = instance;
@@ -22,7 +26,18 @@ class Grid {
         this.gameBoardDimension = gameBoardDimension();
         logicalGrid = new Block[blocksPerScreen][blocksPerScreen];
         setGameBoard();
-        addBlock(1, 0, 0);
+        scheduleTimer();
+    }
+
+    private void scheduleTimer() {
+        final int BLOCK_APPEAR_RATE = 5000;
+        timer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                addBlock();
+            }
+        }, 0, BLOCK_APPEAR_RATE);
     }
 
     /**
@@ -35,14 +50,33 @@ class Grid {
     }
 
     /**
-     * Add block to the game board with specified attributes.
-     *
-     * @param value  the value of the block in 2048
-     * @param xIndex the x index
-     * @param yIndex the y index
+     * Add block to the game board. If there are no free spaces left, the game is lost. Otherwise, a space is randomly
+     * selected, and if it is free, a block will be placed there.
      */
-    private void addBlock(int value, int xIndex, int yIndex) {
+    private void addBlock() {
+        if (!isAnyCoordinateFree()) {
+            instance.gameLose();
+        }
+        int xIndex, yIndex;
+        do {
+            xIndex = (int) (Math.random() * logicalGrid[0].length);
+            yIndex = (int) (Math.random() * logicalGrid.length);
+        } while (logicalGrid[yIndex][xIndex] != null);
+        final int value = (int) (Math.random() * 2) + 1;
         new Block(instance, layout, blocksPerScreen, gameBoardDimension, logicalGrid, value, xIndex, yIndex);
+    }
+
+    private boolean isAnyCoordinateFree() {
+        for (int vertical = 0; vertical < logicalGrid.length; vertical++) {
+            for (int horizontal = 0; horizontal < logicalGrid[0].length; horizontal++) {
+                if (logicalGrid[vertical][horizontal] == null) {
+                    return true;
+                }
+            }
+        }
+        instance.gameLose();
+        timer.cancel();
+        return false;
     }
 
     /**

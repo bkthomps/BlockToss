@@ -51,6 +51,13 @@ class Block {
         valueText.bringToFront();
     }
 
+    void mergeIntoSelf() {
+        setValue(value * 2);
+        if (value == 256) {
+            instance.gameWin();
+        }
+    }
+
     private void initializeValue(int value) {
         this.value = value;
         final String valueString = String.format(Locale.US, "%04d", value);
@@ -62,7 +69,7 @@ class Block {
         valueText.setTextColor(Color.BLACK);
     }
 
-    void setValue(int value) {
+    private void setValue(int value) {
         this.value = value;
         final String valueString = String.format(Locale.US, "%04d", value);
         valueText.setText(valueString);
