@@ -4,6 +4,9 @@ import android.graphics.Point;
 import android.view.Display;
 import android.widget.RelativeLayout;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -117,18 +120,7 @@ class Grid {
      */
     void moveLeft() {
         for (int vertical = 0; vertical < logicalGrid.length; vertical++) {
-            for (int current = 1; current < logicalGrid[0].length; current++) {
-                final Block me = logicalGrid[vertical][current];
-                if (me != null) {
-                    for (int next = 0; next < current; next++) {
-                        final Block compare = logicalGrid[vertical][next];
-                        if (compare == null || compare.getValue() == me.getValue()) {
-                            me.moveToIndex(next, vertical);
-                            return;
-                        }
-                    }
-                }
-            }
+            moveSlitLeft(vertical);
         }
     }
 
@@ -137,5 +129,44 @@ class Grid {
      */
     void moveRight() {
 
+    }
+
+    private void moveSlitLeft(int slitSize) {
+        final List<Block> blocks = new ArrayList<>();
+        for (Block block : logicalGrid[slitSize]) {
+            if (block != null) {
+                blocks.add(block);
+            }
+        }
+        if (blocks.isEmpty()) {
+            return;
+        }
+        final int size = blocks.size();
+        final int[] position = new int[size];
+        computePosition(blocks, position);
+        for (int i = 0; i < size; i++) {
+            blocks.get(i).moveToIndex(position[i], slitSize);
+        }
+    }
+
+    private void computePosition(List<Block> blocks, int[] position) {
+        final int size = position.length;
+        for (int i = 0; i < size; i++) {
+            position[i] = -1;
+        }
+        int positionCounter = 0;
+        for (int i = 0; i < size - 1; i++) {
+            if (position[i] == -1 && blocks.get(i).getValue() == blocks.get(i + 1).getValue()) {
+                position[i] = positionCounter;
+                position[i + 1] = positionCounter;
+                positionCounter++;
+            } else if (position[i] == -1) {
+                position[i] = positionCounter;
+                positionCounter++;
+            }
+        }
+        if (position[size - 1] == -1) {
+            position[size - 1] = positionCounter;
+        }
     }
 }
