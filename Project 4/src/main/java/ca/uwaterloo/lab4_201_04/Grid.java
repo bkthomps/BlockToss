@@ -63,7 +63,7 @@ class Grid {
      * selected, and if it is free, a block will be placed there.
      */
     private void addBlock() {
-        if (!isAnyCoordinateFree()) {
+        if (!isAnyCoordinateFree() || Lab4_201_04.isGameOfficiallyDone) {
             instance.gameLose();
             timer.cancel();
             return;
@@ -99,7 +99,7 @@ class Grid {
     }
 
     /**
-     * Specifies what size the game board should be based on user phone specifications.
+     * Specifies what size the game board should be, based on user phone specifications.
      *
      * @return dimension of the game board
      */
@@ -117,7 +117,7 @@ class Grid {
      * Move and merge the blocks up.
      */
     void moveUp() {
-        if (!isMovePossible()) {
+        if (isMoveProhibited()) {
             return;
         }
         for (int horizontal = 0; horizontal < logicalGrid[0].length; horizontal++) {
@@ -129,7 +129,7 @@ class Grid {
      * Move and merge the blocks down.
      */
     void moveDown() {
-        if (!isMovePossible()) {
+        if (isMoveProhibited()) {
             return;
         }
         for (int horizontal = 0; horizontal < logicalGrid[0].length; horizontal++) {
@@ -141,7 +141,7 @@ class Grid {
      * Move and merge the blocks left.
      */
     void moveLeft() {
-        if (!isMovePossible()) {
+        if (isMoveProhibited()) {
             return;
         }
         for (int vertical = 0; vertical < logicalGrid.length; vertical++) {
@@ -153,12 +153,21 @@ class Grid {
      * Move and merge the blocks right.
      */
     void moveRight() {
-        if (!isMovePossible()) {
+        if (isMoveProhibited()) {
             return;
         }
         for (int vertical = 0; vertical < logicalGrid.length; vertical++) {
             moveSlitRight(vertical);
         }
+    }
+
+    /**
+     * Checks to see if move is prohibited.
+     *
+     * @return if move is prohibited
+     */
+    private boolean isMoveProhibited() {
+        return !isMovePossible() || Lab4_201_04.isGameOfficiallyDone;
     }
 
     /**

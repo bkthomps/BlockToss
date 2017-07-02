@@ -59,7 +59,7 @@ class Block {
      */
     private void initializeValue(int value) {
         this.value = value;
-        final String valueString = String.format(Locale.US, "%04d", value);
+        final String valueString = createValueString();
         valueText = new TextView(instance.getApplicationContext());
         valueText.setText(valueString);
         layout.addView(valueText);
@@ -75,11 +75,30 @@ class Block {
      */
     private void setValue(int value) {
         this.value = value;
-        final String valueString = String.format(Locale.US, "%04d", value);
+        final String valueString = createValueString();
         valueText.setText(valueString);
         if (value == Lab4_201_04.WIN_VALUE) {
             instance.gameWin();
         }
+    }
+
+    /**
+     * Create string based on the value of the block.
+     *
+     * @return string based on value of the block
+     */
+    private String createValueString() {
+        final String formatType;
+        if (value < 10) {
+            formatType = "    %1d";
+        } else if (value < 100) {
+            formatType = "  %2d";
+        } else if (value < 1000) {
+            formatType = " %3d";
+        } else {
+            formatType = "%4d";
+        }
+        return String.format(Locale.US, formatType, value);
     }
 
     /**
