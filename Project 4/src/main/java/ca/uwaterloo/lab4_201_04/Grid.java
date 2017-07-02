@@ -33,7 +33,7 @@ class Grid {
     }
 
     private void scheduleTimer() {
-        final int BLOCK_APPEAR_RATE = 5000;
+        final int BLOCK_APPEAR_RATE = 2500;
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -76,9 +76,9 @@ class Grid {
     }
 
     private boolean isAnyCoordinateFree() {
-        for (int vertical = 0; vertical < logicalGrid.length; vertical++) {
-            for (int horizontal = 0; horizontal < logicalGrid[0].length; horizontal++) {
-                if (logicalGrid[vertical][horizontal] == null) {
+        for (Block[] slit : logicalGrid) {
+            for (Block block : slit) {
+                if (block == null) {
                     return true;
                 }
             }
@@ -182,7 +182,7 @@ class Grid {
         computePosition(blocks, position);
         // Converting position to block position
         for (int i = 0; i < size; i++) {
-            blocks.get(i).moveToIndex(logicalGrid.length - 1 - position[size - 1 - i], slitSize);
+            blocks.get(i).moveToIndex(logicalGrid.length - 1 - position[i], slitSize);
         }
     }
 

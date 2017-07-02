@@ -155,21 +155,26 @@ class Block {
 
             @Override
             public void run() {
-                if (xCurrent == xEnd && yCurrent == yEnd) {
-                    isMoving = false;
-                    timer.cancel();
-                    return;
-                }
-                if (xCurrent != xEnd) {
-                    xCurrent += (isPositiveX ? 1 : -1) * PIXEL_CHANGE_ON_ITERATION;
-                    block.setX(xCurrent);
-                    valueText.setX(xCurrent + X_TEXT_BASE);
-                }
-                if (yCurrent != yEnd) {
-                    yCurrent += (isPositiveY ? 1 : -1) * PIXEL_CHANGE_ON_ITERATION;
-                    block.setY(yCurrent);
-                    valueText.setY(yCurrent + Y_TEXT_BASE);
-                }
+                instance.runOnUiThread(new TimerTask() {
+                    @Override
+                    public void run() {
+                        if (xCurrent == xEnd && yCurrent == yEnd) {
+                            isMoving = false;
+                            timer.cancel();
+                            return;
+                        }
+                        if (xCurrent != xEnd) {
+                            xCurrent += (isPositiveX ? 1 : -1) * PIXEL_CHANGE_ON_ITERATION;
+                            block.setX(xCurrent);
+                            valueText.setX(xCurrent + X_TEXT_BASE);
+                        }
+                        if (yCurrent != yEnd) {
+                            yCurrent += (isPositiveY ? 1 : -1) * PIXEL_CHANGE_ON_ITERATION;
+                            block.setY(yCurrent);
+                            valueText.setY(yCurrent + Y_TEXT_BASE);
+                        }
+                    }
+                });
             }
         }, EXECUTE_PERIOD_IN_MILLI_SECONDS, EXECUTE_PERIOD_IN_MILLI_SECONDS);
     }
