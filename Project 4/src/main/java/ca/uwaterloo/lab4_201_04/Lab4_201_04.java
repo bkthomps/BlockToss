@@ -37,6 +37,9 @@ public class Lab4_201_04 extends AppCompatActivity {
         sensorManager.registerListener(accelerometerHandler, accelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
     }
 
+    /**
+     * Called to trigger a game win.
+     */
     void gameWin() {
         if (!isGameOfficiallyDone) {
             Log.wtf("Notice", "You Won!!");
@@ -44,6 +47,9 @@ public class Lab4_201_04 extends AppCompatActivity {
         }
     }
 
+    /**
+     * Called to trigger a game lose.
+     */
     void gameLose() {
         if (!isGameOfficiallyDone) {
             Log.wtf("Notice", "You Lost!!");

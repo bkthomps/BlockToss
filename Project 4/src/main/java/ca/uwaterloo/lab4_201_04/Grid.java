@@ -32,6 +32,9 @@ class Grid {
         scheduleTimer();
     }
 
+    /**
+     * Schedules a timer to create new blocks at specified intervals of time.
+     */
     private void scheduleTimer() {
         timer.schedule(new TimerTask() {
             @Override
@@ -79,6 +82,11 @@ class Grid {
         new Block(instance, layout, blocksPerScreen, gameBoardDimension, logicalGrid, value, xIndex, yIndex);
     }
 
+    /**
+     * Checks if any coordinate is free.
+     *
+     * @return if a coordinate is free
+     */
     private boolean isAnyCoordinateFree() {
         for (Block[] slit : logicalGrid) {
             for (Block block : slit) {
@@ -153,6 +161,11 @@ class Grid {
         }
     }
 
+    /**
+     * Moves a slit up.
+     *
+     * @param slitSize the size of the slit to move
+     */
     private void moveSlitUp(int slitSize) {
         // Adding blocks to the list
         final List<Block> blocks = new ArrayList<>();
@@ -175,6 +188,11 @@ class Grid {
         }
     }
 
+    /**
+     * Moves a slit down.
+     *
+     * @param slitSize the size of the slit to move
+     */
     private void moveSlitDown(int slitSize) {
         // Adding blocks to the list
         final List<Block> blocks = new ArrayList<>();
@@ -198,6 +216,11 @@ class Grid {
         }
     }
 
+    /**
+     * Moves a slit left.
+     *
+     * @param slitSize the size of the slit to move
+     */
     private void moveSlitLeft(int slitSize) {
         // Adding blocks to the list
         final List<Block> blocks = new ArrayList<>();
@@ -219,6 +242,11 @@ class Grid {
         }
     }
 
+    /**
+     * Moves a slit right.
+     *
+     * @param slitSize the size of the slit to move
+     */
     private void moveSlitRight(int slitSize) {
         // Adding blocks to the list
         final List<Block> blocks = new ArrayList<>();
@@ -241,6 +269,12 @@ class Grid {
         }
     }
 
+    /**
+     * Computes the position.
+     *
+     * @param blocks   the list of blocks.
+     * @param position the position in which the blocks should be displayed
+     */
     private void computePosition(List<Block> blocks, int[] position) {
         final int size = blocks.size();
         for (int i = 0; i < size; i++) {
@@ -262,6 +296,11 @@ class Grid {
         }
     }
 
+    /**
+     * Checks to see if it is possible to move.
+     *
+     * @return if it is possible to move
+     */
     private boolean isMovePossible() {
         for (Block[] slit : logicalGrid) {
             for (Block block : slit) {

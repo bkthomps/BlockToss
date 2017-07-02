@@ -5,7 +5,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -53,6 +52,11 @@ class Block {
         valueText.bringToFront();
     }
 
+    /**
+     * Initializes the value of the block.
+     *
+     * @param value the value of the block to initialize
+     */
     private void initializeValue(int value) {
         this.value = value;
         final String valueString = String.format(Locale.US, "%04d", value);
@@ -64,6 +68,11 @@ class Block {
         valueText.setTextColor(Color.BLACK);
     }
 
+    /**
+     * Sets the value of the block.
+     *
+     * @param value the value of the block to set
+     */
     private void setValue(int value) {
         this.value = value;
         final String valueString = String.format(Locale.US, "%04d", value);
@@ -179,6 +188,11 @@ class Block {
         }, EXECUTE_PERIOD_IN_MILLI_SECONDS, EXECUTE_PERIOD_IN_MILLI_SECONDS);
     }
 
+    /**
+     * Kills the block, making its views transparent, and nulling them.
+     *
+     * @param killer which block is killing this block
+     */
     private void kill(final Block killer) {
         final int CHECK_RATE = 100;
         final Timer timer = new Timer();
