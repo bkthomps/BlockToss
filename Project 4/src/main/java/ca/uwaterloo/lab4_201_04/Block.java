@@ -68,7 +68,7 @@ class Block {
         this.value = value;
         final String valueString = String.format(Locale.US, "%04d", value);
         valueText.setText(valueString);
-        if (value == 256) {
+        if (value == Lab4_201_04.WIN_VALUE) {
             instance.gameWin();
         }
     }
@@ -128,7 +128,7 @@ class Block {
             atPosition.kill(this);
             logicalGrid[yIndex][xIndex] = this;
         } else {
-            throw new InputMismatchException("Can only move onto null or block of equal value.");
+            throw new IllegalStateException("Can only move onto null or block of equal value.");
         }
     }
 

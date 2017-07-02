@@ -12,6 +12,12 @@ import android.widget.RelativeLayout;
  */
 public class Lab4_201_04 extends AppCompatActivity {
 
+    final static int WIN_VALUE = 64;
+    final static int BLOCK_APPEAR_RATE_IN_MILLI_SECONDS = 2500;
+    final static int[] BLOCKS_THAT_CAN_SPAWN = {1, 2};
+
+    private boolean isGameOfficiallyDone;
+
     /**
      * Called when app starts to initialize components.
      *
@@ -32,10 +38,16 @@ public class Lab4_201_04 extends AppCompatActivity {
     }
 
     void gameWin() {
-        Log.d("You Won!!", "You Won!!");
+        if (!isGameOfficiallyDone) {
+            Log.wtf("Notice", "You Won!!");
+            isGameOfficiallyDone = true;
+        }
     }
 
     void gameLose() {
-        Log.d("You Lost!!", "You Lost!!");
+        if (!isGameOfficiallyDone) {
+            Log.wtf("Notice", "You Lost!!");
+            isGameOfficiallyDone = true;
+        }
     }
 }

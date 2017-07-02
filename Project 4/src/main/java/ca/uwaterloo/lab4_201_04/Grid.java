@@ -33,7 +33,6 @@ class Grid {
     }
 
     private void scheduleTimer() {
-        final int BLOCK_APPEAR_RATE = 2500;
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -44,7 +43,7 @@ class Grid {
                     }
                 });
             }
-        }, 0, BLOCK_APPEAR_RATE);
+        }, 0, Lab4_201_04.BLOCK_APPEAR_RATE_IN_MILLI_SECONDS);
     }
 
     /**
@@ -71,7 +70,12 @@ class Grid {
             xIndex = (int) (Math.random() * logicalGrid[0].length);
             yIndex = (int) (Math.random() * logicalGrid.length);
         } while (logicalGrid[yIndex][xIndex] != null);
-        final int value = (int) (Math.random() * 2) + 1;
+        final int amountOfSpawnBlocks = Lab4_201_04.BLOCKS_THAT_CAN_SPAWN.length;
+        final int index = (int) (Math.random() * amountOfSpawnBlocks);
+        final int value = Lab4_201_04.BLOCKS_THAT_CAN_SPAWN[index];
+        if (value % 2 != 0 && value != 1) {
+            throw new IllegalStateException("Spawn block value must be 1 or a multiple of 2.");
+        }
         new Block(instance, layout, blocksPerScreen, gameBoardDimension, logicalGrid, value, xIndex, yIndex);
     }
 
@@ -108,6 +112,9 @@ class Grid {
         if (!isMovePossible()) {
             return;
         }
+        for (int horizontal = 0; horizontal < logicalGrid[0].length; horizontal++) {
+            moveSlitUp(horizontal);
+        }
     }
 
     /**
@@ -116,6 +123,9 @@ class Grid {
     void moveDown() {
         if (!isMovePossible()) {
             return;
+        }
+        for (int horizontal = 0; horizontal < logicalGrid[0].length; horizontal++) {
+            moveSlitDown(horizontal);
         }
     }
 
@@ -140,6 +150,51 @@ class Grid {
         }
         for (int vertical = 0; vertical < logicalGrid.length; vertical++) {
             moveSlitRight(vertical);
+        }
+    }
+
+    private void moveSlitUp(int slitSize) {
+        // Adding blocks to the list
+        final List<Block> blocks = new ArrayList<>();
+        for (int i = 0; i < logicalGrid.length; i++) {
+            final Block block = logicalGrid[i][slitSize];
+            if (block != null) {
+                blocks.add(block);
+            }
+        }
+        if (blocks.isEmpty()) {
+            return;
+        }
+        // Computing the position
+        final int size = blocks.size();
+        final int[] position = new int[size];
+        computePosition(blocks, position);
+        // Converting position to block position
+        for (int i = 0; i < size; i++) {
+            blocks.get(i).moveToIndex(slitSize, position[i]);
+        }
+    }
+
+    private void moveSlitDown(int slitSize) {
+        // Adding blocks to the list
+        final List<Block> blocks = new ArrayList<>();
+        for (int i = 0; i < logicalGrid.length; i++) {
+            final Block block = logicalGrid[i][slitSize];
+            if (block != null) {
+                blocks.add(block);
+            }
+        }
+        if (blocks.isEmpty()) {
+            return;
+        }
+        Collections.reverse(blocks);
+        // Computing the position
+        final int size = blocks.size();
+        final int[] position = new int[size];
+        computePosition(blocks, position);
+        // Converting position to block position
+        for (int i = 0; i < size; i++) {
+            blocks.get(i).moveToIndex(slitSize, logicalGrid.length - 1 - position[i]);
         }
     }
 
