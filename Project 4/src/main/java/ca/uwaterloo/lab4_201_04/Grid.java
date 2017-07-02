@@ -104,20 +104,27 @@ class Grid {
      * Move and merge the blocks up.
      */
     void moveUp() {
-
+        if (!isMovePossible()) {
+            return;
+        }
     }
 
     /**
      * Move and merge the blocks down.
      */
     void moveDown() {
-
+        if (!isMovePossible()) {
+            return;
+        }
     }
 
     /**
      * Move and merge the blocks left.
      */
     void moveLeft() {
+        if (!isMovePossible()) {
+            return;
+        }
         for (int vertical = 0; vertical < logicalGrid.length; vertical++) {
             moveSlitLeft(vertical);
         }
@@ -127,7 +134,9 @@ class Grid {
      * Move and merge the blocks right.
      */
     void moveRight() {
-
+        if (!isMovePossible()) {
+            return;
+        }
     }
 
     private void moveSlitLeft(int slitSize) {
@@ -167,5 +176,16 @@ class Grid {
         if (position[size - 1] == -1) {
             position[size - 1] = positionCounter;
         }
+    }
+
+    private boolean isMovePossible() {
+        for (Block[] slit : logicalGrid) {
+            for (Block block : slit) {
+                if (block != null && block.isMoving()) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
