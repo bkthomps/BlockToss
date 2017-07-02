@@ -31,6 +31,8 @@ class Block {
     private int xOld;
     private int yOld;
 
+    private boolean isMoving;
+
     Block(Lab4_201_04 instance, RelativeLayout layout, int blocksPerScreen, int gameBoardDimension,
           Block[][] logicalGrid, int value, int xIndex, int yIndex) {
         this.instance = instance;
@@ -66,6 +68,9 @@ class Block {
         this.value = value;
         final String valueString = String.format(Locale.US, "%04d", value);
         valueText.setText(valueString);
+        if (value == 256) {
+            instance.gameWin();
+        }
     }
 
     /**
@@ -120,18 +125,10 @@ class Block {
         if (atPosition == null) {
             logicalGrid[yIndex][xIndex] = this;
         } else if (atPosition.getValue() == this.getValue()) {
-            atPosition.kill();
-            mergeIntoSelf();
+            atPosition.kill(this);
             logicalGrid[yIndex][xIndex] = this;
         } else {
             throw new InputMismatchException("Can only move onto null or block of equal value.");
-        }
-    }
-
-    private void mergeIntoSelf() {
-        setValue(value * 2);
-        if (value == 256) {
-            instance.gameWin();
         }
     }
 
@@ -147,6 +144,8 @@ class Block {
         final boolean isPositiveX = xIndex > xOld;
         final boolean isPositiveY = yIndex > yOld;
 
+        isMoving = true;
+
         final Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             int xCurrent = BASE_PIXEL + sizeOfBlock * xOld;
@@ -157,6 +156,7 @@ class Block {
             @Override
             public void run() {
                 if (xCurrent == xEnd && yCurrent == yEnd) {
+                    isMoving = false;
                     timer.cancel();
                     return;
                 }
@@ -174,14 +174,34 @@ class Block {
         }, EXECUTE_PERIOD_IN_MILLI_SECONDS, EXECUTE_PERIOD_IN_MILLI_SECONDS);
     }
 
-    private void kill() {
-        block.setImageResource(android.R.color.transparent);
-        block = null;
-        valueText.setText("");
-        valueText = null;
+    private void kill(final Block killer) {
+        final int CHECK_RATE = 100;
+        final Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                instance.runOnUiThread(new TimerTask() {
+                    @Override
+                    public void run() {
+                        if (!killer.isMoving) {
+                            block.setImageResource(android.R.color.transparent);
+                            block = null;
+                            valueText.setText("");
+                            valueText = null;
+                            killer.setValue(value * 2);
+                            timer.cancel();
+                        }
+                    }
+                });
+            }
+        }, 0, CHECK_RATE);
     }
 
     int getValue() {
         return value;
+    }
+
+    boolean isMoving() {
+        return isMoving;
     }
 }

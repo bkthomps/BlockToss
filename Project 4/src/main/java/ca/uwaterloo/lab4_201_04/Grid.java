@@ -5,7 +5,6 @@ import android.view.Display;
 import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
