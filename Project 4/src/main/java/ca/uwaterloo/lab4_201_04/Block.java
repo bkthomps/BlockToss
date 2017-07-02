@@ -29,7 +29,6 @@ class Block {
 
     private int xOld;
     private int yOld;
-    private boolean isInMotion;
 
     Block(Lab4_201_04 instance, RelativeLayout layout, int blocksPerScreen, int gameBoardDimension,
           Block[][] logicalGrid, int value, int xIndex, int yIndex) {
@@ -109,13 +108,6 @@ class Block {
      * @param yIndex y index
      */
     void moveToIndex(int xIndex, int yIndex) {
-        // TODO: these two checks should be gone in lab 4
-        if (xIndex == -1) {
-            xIndex = xOld;
-        }
-        if (yIndex == -1) {
-            yIndex = yOld;
-        }
         animateBlockMove(xIndex, yIndex);
         setLogicalGrid(xIndex, yIndex);
     }
@@ -145,8 +137,6 @@ class Block {
         final boolean isPositiveX = xIndex > xOld;
         final boolean isPositiveY = yIndex > yOld;
 
-        isInMotion = true;
-
         final Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             int xCurrent = BASE_PIXEL + sizeOfBlock * xOld;
@@ -157,7 +147,6 @@ class Block {
             @Override
             public void run() {
                 if (xCurrent == xEnd && yCurrent == yEnd) {
-                    isInMotion = false;
                     timer.cancel();
                     return;
                 }
@@ -173,10 +162,6 @@ class Block {
                 }
             }
         }, EXECUTE_PERIOD_IN_MILLI_SECONDS, EXECUTE_PERIOD_IN_MILLI_SECONDS);
-    }
-
-    boolean isInMotion() {
-        return isInMotion;
     }
 
     int getValue() {

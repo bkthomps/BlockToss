@@ -99,73 +99,42 @@ class Grid {
     }
 
     /**
-     * Moves the single block instance up.
-     * TODO: should be implemented differently for lab 4
+     * Move and merge the blocks up.
      */
     void moveUp() {
-        final Block block = getSingleInstance();
-        final boolean isMoving = block.isInMotion();
-        if (isMoving) {
-            return;
-        }
-        block.moveToIndex(-1, 0);
+
     }
 
     /**
-     * Moves the single block instance down.
-     * TODO: should be implemented differently for lab 4
+     * Move and merge the blocks down.
      */
     void moveDown() {
-        final Block block = getSingleInstance();
-        final boolean isMoving = block.isInMotion();
-        if (isMoving) {
-            return;
-        }
-        block.moveToIndex(-1, blocksPerScreen - 1);
+
     }
 
     /**
-     * Moves the single block instance left.
-     * TODO: should be implemented differently for lab 4
+     * Move and merge the blocks left.
      */
     void moveLeft() {
-        final Block block = getSingleInstance();
-        final boolean isMoving = block.isInMotion();
-        if (isMoving) {
-            return;
-        }
-        block.moveToIndex(0, -1);
-    }
-
-    /**
-     * Moves the single block instance right.
-     * TODO: should be implemented differently for lab 4
-     */
-    void moveRight() {
-        final Block block = getSingleInstance();
-        final boolean isMoving = block.isInMotion();
-        if (isMoving) {
-            return;
-        }
-        block.moveToIndex(blocksPerScreen - 1, -1);
-    }
-
-    /**
-     * Retrieves the single block instance.
-     * TODO: should be gone by lab 4
-     *
-     * @return the single block instance
-     * @throws NullPointerException if forgot to add an instance of a block
-     */
-    private Block getSingleInstance() {
-        for (int vertical = 0; vertical < blocksPerScreen; vertical++) {
-            for (int horizontal = 0; horizontal < blocksPerScreen; horizontal++) {
-                final Block instance = logicalGrid[vertical][horizontal];
-                if (instance != null) {
-                    return instance;
+        for (int vertical = 0; vertical < logicalGrid.length; vertical++) {
+            for (int current = 1; current < logicalGrid[0].length; current++) {
+                final Block me = logicalGrid[vertical][current];
+                if (me != null) {
+                    for (int next = 0; next < current; next++) {
+                        if (logicalGrid[vertical][next] == null) {
+                            me.moveToIndex(next, vertical);
+                            return;
+                        }
+                    }
                 }
             }
         }
-        throw new NullPointerException();
+    }
+
+    /**
+     * Move and merge the blocks right.
+     */
+    void moveRight() {
+
     }
 }
