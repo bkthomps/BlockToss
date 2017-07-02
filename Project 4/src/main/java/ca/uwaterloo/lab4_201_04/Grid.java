@@ -121,7 +121,8 @@ class Grid {
                 final Block me = logicalGrid[vertical][current];
                 if (me != null) {
                     for (int next = 0; next < current; next++) {
-                        if (logicalGrid[vertical][next] == null) {
+                        final Block compare = logicalGrid[vertical][next];
+                        if (compare == null || compare.getValue() == me.getValue()) {
                             me.moveToIndex(next, vertical);
                             return;
                         }

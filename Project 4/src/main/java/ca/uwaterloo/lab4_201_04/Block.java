@@ -5,6 +5,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -20,9 +21,9 @@ class Block {
 
     private final Lab4_201_04 instance;
     private final RelativeLayout layout;
-    private final ImageView block;
     private final int sizeOfBlock;
     private final Block[][] logicalGrid;
+    private ImageView block;
 
     private int value;
     private TextView valueText;
@@ -48,13 +49,6 @@ class Block {
         block.setScaleY(ratio);
         setToIndex(xIndex, yIndex);
         valueText.bringToFront();
-    }
-
-    void mergeIntoSelf() {
-        setValue(value * 2);
-        if (value == 256) {
-            instance.gameWin();
-        }
     }
 
     private void initializeValue(int value) {
@@ -122,7 +116,23 @@ class Block {
         logicalGrid[yOld][xOld] = null;
         xOld = xIndex;
         yOld = yIndex;
-        logicalGrid[yIndex][xIndex] = this;
+        final Block atPosition = logicalGrid[yIndex][xIndex];
+        if (atPosition == null) {
+            logicalGrid[yIndex][xIndex] = this;
+        } else if (atPosition.getValue() == this.getValue()) {
+            atPosition.kill();
+            mergeIntoSelf();
+            logicalGrid[yIndex][xIndex] = this;
+        } else {
+            throw new InputMismatchException("Can only move onto null or block of equal value.");
+        }
+    }
+
+    private void mergeIntoSelf() {
+        setValue(value * 2);
+        if (value == 256) {
+            instance.gameWin();
+        }
     }
 
     /**
@@ -162,6 +172,13 @@ class Block {
                 }
             }
         }, EXECUTE_PERIOD_IN_MILLI_SECONDS, EXECUTE_PERIOD_IN_MILLI_SECONDS);
+    }
+
+    private void kill() {
+        block.setImageResource(android.R.color.transparent);
+        block = null;
+        valueText.setText("");
+        valueText = null;
     }
 
     int getValue() {
