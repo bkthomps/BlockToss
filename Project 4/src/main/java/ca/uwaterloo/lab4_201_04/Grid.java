@@ -5,6 +5,7 @@ import android.view.Display;
 import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -137,9 +138,13 @@ class Grid {
         if (!isMovePossible()) {
             return;
         }
+        for (int vertical = 0; vertical < logicalGrid.length; vertical++) {
+            moveSlitRight(vertical);
+        }
     }
 
     private void moveSlitLeft(int slitSize) {
+        // Adding blocks to the list
         final List<Block> blocks = new ArrayList<>();
         for (Block block : logicalGrid[slitSize]) {
             if (block != null) {
@@ -149,16 +154,40 @@ class Grid {
         if (blocks.isEmpty()) {
             return;
         }
+        // Computing the position
         final int size = blocks.size();
         final int[] position = new int[size];
         computePosition(blocks, position);
+        // Converting position to block position
         for (int i = 0; i < size; i++) {
             blocks.get(i).moveToIndex(position[i], slitSize);
         }
     }
 
+    private void moveSlitRight(int slitSize) {
+        // Adding blocks to the list
+        final List<Block> blocks = new ArrayList<>();
+        for (Block block : logicalGrid[slitSize]) {
+            if (block != null) {
+                blocks.add(block);
+            }
+        }
+        if (blocks.isEmpty()) {
+            return;
+        }
+        Collections.reverse(blocks);
+        // Computing the position
+        final int size = blocks.size();
+        final int[] position = new int[size];
+        computePosition(blocks, position);
+        // Converting position to block position
+        for (int i = 0; i < size; i++) {
+            blocks.get(i).moveToIndex(logicalGrid.length - 1 - position[size - 1 - i], slitSize);
+        }
+    }
+
     private void computePosition(List<Block> blocks, int[] position) {
-        final int size = position.length;
+        final int size = blocks.size();
         for (int i = 0; i < size; i++) {
             position[i] = -1;
         }
