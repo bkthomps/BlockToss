@@ -34,7 +34,7 @@ class Grid {
     }
 
     /**
-     * Set the size of the game board and the game board itself.¬
+     * Set the size of the game board and the game board itself.
      */
     private void setGameBoard() {
         layout.getLayoutParams().width = gameBoardDimension;

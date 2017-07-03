@@ -54,7 +54,7 @@ class Block {
     }
 
     /**
-     * Initializes the value of the block.
+     * Initializes the value text of the block.
      */
     private void initializeValueText() {
         final String valueString = createValueString();
