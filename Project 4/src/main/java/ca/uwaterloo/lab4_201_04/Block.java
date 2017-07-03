@@ -34,13 +34,14 @@ class Block {
 
     Block(Lab4_201_04 instance, RelativeLayout layout, int blocksPerScreen, int gameBoardDimension,
           Block[][] logicalGrid, int value, int xIndex, int yIndex) {
+        this.value = value;
         this.instance = instance;
         this.layout = layout;
         this.logicalGrid = logicalGrid;
-        initializeValue(value);
+        logicalGrid[yIndex][xIndex] = this;
         xOld = xIndex;
         yOld = yIndex;
-        logicalGrid[yIndex][xIndex] = this;
+        initializeValueText();
         final int BLOCK_PIXEL_SIZE = 130;
         sizeOfBlock = gameBoardDimension / blocksPerScreen;
         final float ratio = (float) sizeOfBlock / (blocksPerScreen * BLOCK_PIXEL_SIZE);
@@ -54,11 +55,8 @@ class Block {
 
     /**
      * Initializes the value of the block.
-     *
-     * @param value the value of the block to initialize
      */
-    private void initializeValue(int value) {
-        this.value = value;
+    private void initializeValueText() {
         final String valueString = createValueString();
         valueText = new TextView(instance.getApplicationContext());
         valueText.setText(valueString);
