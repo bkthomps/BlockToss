@@ -135,6 +135,10 @@ class Block {
      * @param yIndex y index
      */
     void moveToIndex(int xIndex, int yIndex) {
+        if (xOld == xIndex && yOld == yIndex) {
+            return;
+        }
+        Grid.didMovementOccur = true;
         animateBlockMove(xIndex, yIndex);
         setLogicalGrid(xIndex, yIndex);
     }

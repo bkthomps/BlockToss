@@ -20,7 +20,8 @@ class Grid {
     private final int blocksPerScreen;
     private final int gameBoardDimension;
     private final Block[][] logicalGrid;
-    private final Timer timer = new Timer();
+
+    static boolean didMovementOccur;
 
     Grid(Lab4_201_04 instance, RelativeLayout layout, int blocksPerScreen) {
         this.instance = instance;
@@ -29,24 +30,7 @@ class Grid {
         this.gameBoardDimension = gameBoardDimension();
         logicalGrid = new Block[blocksPerScreen][blocksPerScreen];
         setGameBoard();
-        scheduleTimer();
-    }
-
-    /**
-     * Schedules a timer to create new blocks at specified intervals of time.
-     */
-    private void scheduleTimer() {
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                instance.runOnUiThread(new TimerTask() {
-                    @Override
-                    public void run() {
-                        addBlock();
-                    }
-                });
-            }
-        }, 0, Lab4_201_04.BLOCK_APPEAR_RATE_IN_MILLI_SECONDS);
+        addBlock();
     }
 
     /**
@@ -59,15 +43,33 @@ class Grid {
     }
 
     /**
+     * Schedules a block to be added once all the moving blocks settle.
+     */
+    private void scheduleBlockAdd() {
+        final int CHECK_RATE = 100;
+        final Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                instance.runOnUiThread(new TimerTask() {
+                    @Override
+                    public void run() {
+                        if (didMovementOccur && isMovePossible()) {
+                            addBlock();
+                            didMovementOccur = false;
+                            timer.cancel();
+                        }
+                    }
+                });
+            }
+        }, 0, CHECK_RATE);
+    }
+
+    /**
      * Add block to the game board. If there are no free spaces left, the game is lost. Otherwise, a space is randomly
      * selected, and if it is free, a block will be placed there.
      */
     private void addBlock() {
-        if (!isAnyCoordinateFree() || Lab4_201_04.isGameOfficiallyDone) {
-            instance.gameLose();
-            timer.cancel();
-            return;
-        }
         int xIndex, yIndex;
         do {
             xIndex = (int) (Math.random() * logicalGrid[0].length);
@@ -80,6 +82,9 @@ class Grid {
             throw new IllegalStateException("Spawn block value must be 1 or a multiple of 2.");
         }
         new Block(instance, layout, blocksPerScreen, gameBoardDimension, logicalGrid, value, xIndex, yIndex);
+        if (!isAnyCoordinateFree() && !isCombinePossible()) {
+            instance.gameLose();
+        }
     }
 
     /**
@@ -91,6 +96,29 @@ class Grid {
         for (Block[] slit : logicalGrid) {
             for (Block block : slit) {
                 if (block == null) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Determines if blocks can combine.
+     *
+     * @return if blocks can combine
+     */
+    private boolean isCombinePossible() {
+        for (int i = 0; i < logicalGrid.length; i++) {
+            for (int j = 0; j < logicalGrid[0].length - 1; j++) {
+                if (logicalGrid[i][j].getValue() == logicalGrid[i][j + 1].getValue()) {
+                    return true;
+                }
+            }
+        }
+        for (int i = 0; i < logicalGrid.length - 1; i++) {
+            for (int j = 0; j < logicalGrid[0].length; j++) {
+                if (logicalGrid[i][j].getValue() == logicalGrid[i + 1][j].getValue()) {
                     return true;
                 }
             }
@@ -123,6 +151,7 @@ class Grid {
         for (int horizontal = 0; horizontal < logicalGrid[0].length; horizontal++) {
             moveSlitUp(horizontal);
         }
+        scheduleBlockAdd();
     }
 
     /**
@@ -135,6 +164,7 @@ class Grid {
         for (int horizontal = 0; horizontal < logicalGrid[0].length; horizontal++) {
             moveSlitDown(horizontal);
         }
+        scheduleBlockAdd();
     }
 
     /**
@@ -147,6 +177,7 @@ class Grid {
         for (int vertical = 0; vertical < logicalGrid.length; vertical++) {
             moveSlitLeft(vertical);
         }
+        scheduleBlockAdd();
     }
 
     /**
@@ -159,6 +190,7 @@ class Grid {
         for (int vertical = 0; vertical < logicalGrid.length; vertical++) {
             moveSlitRight(vertical);
         }
+        scheduleBlockAdd();
     }
 
     /**
