@@ -34,7 +34,7 @@ class Grid {
     }
 
     /**
-     * Set the size of the game board and the game board itself.
+     * Sets the size of the game board and sets the game board resource.
      */
     private void setGameBoard() {
         layout.getLayoutParams().width = gameBoardDimension;
@@ -66,8 +66,8 @@ class Grid {
     }
 
     /**
-     * Add block to the game board. If there are no free spaces left, the game is lost. Otherwise, a space is randomly
-     * selected, and if it is free, a block will be placed there.
+     * Adds a block to the game board. If there are no free spots left and the blocks cannot merge, the game is lost.
+     * Otherwise, a spot is randomly selected, and if it is free, a block will be placed there.
      */
     private void addBlock() {
         int xIndex, yIndex;
