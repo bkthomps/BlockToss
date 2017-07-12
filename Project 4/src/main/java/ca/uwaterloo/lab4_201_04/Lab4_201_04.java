@@ -21,7 +21,7 @@ public class Lab4_201_04 extends AppCompatActivity {
     static boolean isGameOfficiallyDone;
 
     /**
-     * Called when app starts so that components can be initialized.
+     * Called when app starts so that components are initialized.
      *
      * @param savedInstanceState passed into the super method which is overridden
      */
