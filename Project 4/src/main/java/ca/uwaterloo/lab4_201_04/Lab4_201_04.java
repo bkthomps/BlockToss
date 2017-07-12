@@ -21,7 +21,7 @@ public class Lab4_201_04 extends AppCompatActivity {
     static boolean isGameOfficiallyDone;
 
     /**
-     * Called when app starts to initialize components.
+     * Called when app starts so that components can be initialized.
      *
      * @param savedInstanceState passed into the super method which is overridden
      */
@@ -40,14 +40,14 @@ public class Lab4_201_04 extends AppCompatActivity {
     }
 
     /**
-     * Called to trigger a game win.
+     * Triggers a game win.
      */
     void gameWin() {
         endGame("You Won!");
     }
 
     /**
-     * Called to trigger a game lose.
+     * Triggers a game lose.
      */
     void gameLose() {
         endGame("You Lost!");
@@ -56,7 +56,7 @@ public class Lab4_201_04 extends AppCompatActivity {
     /**
      * Ends the game and notifies the user.
      *
-     * @param message the message to notify the user with
+     * @param message notification which appears to the user
      */
     private void endGame(String message) {
         if (!isGameOfficiallyDone) {
