@@ -82,7 +82,7 @@ class Grid {
             throw new IllegalStateException("Spawn block value must be 1 or a multiple of 2.");
         }
         new Block(instance, layout, blocksPerScreen, gameBoardDimension, logicalGrid, value, xIndex, yIndex);
-        if (!isAnyCoordinateFree() && !isCombinePossible()) {
+        if (!isAnyCoordinateFree()&&!isCombinePossible()) {
             instance.gameLose();
         }
     }
