@@ -14,8 +14,8 @@ import android.widget.TextView;
  */
 public class Lab4_201_04 extends AppCompatActivity {
 
-    final static int WIN_VALUE = 64;
-    final static int[] BLOCKS_THAT_CAN_SPAWN = {1, 2};
+    final static int WIN_VALUE = 256;
+    final static int[] BLOCKS_THAT_CAN_SPAWN = {2, 4};
 
     private RelativeLayout layout;
     static boolean isGameOfficiallyDone;
