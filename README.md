@@ -2,6 +2,6 @@
 
 University of Waterloo
 
-ECE 155
+ECE 155 - Embedded Systems
 
 Spring 2017
