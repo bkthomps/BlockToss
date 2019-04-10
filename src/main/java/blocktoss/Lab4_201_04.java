@@ -1,4 +1,4 @@
-package ca.uwaterloo.lab4_201_04;
+package blocktoss;
 
 import android.graphics.Color;
 import android.hardware.Sensor;
@@ -12,7 +12,7 @@ import android.widget.TextView;
 /**
  * Initializes components which are displayed on the app screen.
  */
-public class Lab4_201_04 extends AppCompatActivity {
+public class BlockToss extends AppCompatActivity {
 
     final static int WIN_VALUE = 256;
     final static int[] BLOCKS_THAT_CAN_SPAWN = {2, 4};
@@ -28,7 +28,7 @@ public class Lab4_201_04 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lab4_201_04);
+        setContentView(R.layout.activity_blocktoss);
 
         layout = (RelativeLayout) findViewById(R.id.layout);
         final Grid grid = new Grid(this, layout, 4);

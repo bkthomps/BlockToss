@@ -7,5 +7,5 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context="ca.uwaterloo.lab4_201_04.Lab4_201_04">
+    tools:context="blocktoss.BlockToss">
 </RelativeLayout>

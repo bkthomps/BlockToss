@@ -1,4 +1,4 @@
-package ca.uwaterloo.lab4_201_04;
+package blocktoss;
 
 import android.graphics.Point;
 import android.view.Display;
@@ -15,7 +15,7 @@ import java.util.TimerTask;
  */
 class Grid {
 
-    private final Lab4_201_04 instance;
+    private final BlockToss instance;
     private final RelativeLayout layout;
     private final int blocksPerScreen;
     private final int gameBoardDimension;
@@ -23,7 +23,7 @@ class Grid {
 
     static boolean didMovementOccur;
 
-    Grid(Lab4_201_04 instance, RelativeLayout layout, int blocksPerScreen) {
+    Grid(BlockToss instance, RelativeLayout layout, int blocksPerScreen) {
         this.instance = instance;
         this.layout = layout;
         this.blocksPerScreen = blocksPerScreen;
@@ -75,9 +75,9 @@ class Grid {
             xIndex = (int) (Math.random() * logicalGrid[0].length);
             yIndex = (int) (Math.random() * logicalGrid.length);
         } while (logicalGrid[yIndex][xIndex] != null);
-        final int amountOfSpawnBlocks = Lab4_201_04.BLOCKS_THAT_CAN_SPAWN.length;
+        final int amountOfSpawnBlocks = BlockToss.BLOCKS_THAT_CAN_SPAWN.length;
         final int index = (int) (Math.random() * amountOfSpawnBlocks);
-        final int value = Lab4_201_04.BLOCKS_THAT_CAN_SPAWN[index];
+        final int value = BlockToss.BLOCKS_THAT_CAN_SPAWN[index];
         if (value % 2 != 0 && value != 1) {
             throw new IllegalStateException("Spawn block value must be 1 or a multiple of 2.");
         }
@@ -199,7 +199,7 @@ class Grid {
      * @return if move is prohibited
      */
     private boolean isMoveProhibited() {
-        return !isMovePossible() || Lab4_201_04.isGameOfficiallyDone;
+        return !isMovePossible() || BlockToss.isGameOfficiallyDone;
     }
 
     /**

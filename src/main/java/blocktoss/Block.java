@@ -1,4 +1,4 @@
-package ca.uwaterloo.lab4_201_04;
+package blocktoss;
 
 import android.graphics.Color;
 import android.widget.ImageView;
@@ -18,7 +18,7 @@ class Block {
     private static final int Y_TEXT_BASE = 160;
     private static final int X_TEXT_BASE = 120;
 
-    private final Lab4_201_04 instance;
+    private final BlockToss instance;
     private final RelativeLayout layout;
     private final int sizeOfBlock;
     private final Block[][] logicalGrid;
@@ -32,7 +32,7 @@ class Block {
 
     private boolean isMoving;
 
-    Block(Lab4_201_04 instance, RelativeLayout layout, int blocksPerScreen, int gameBoardDimension,
+    Block(BlockToss instance, RelativeLayout layout, int blocksPerScreen, int gameBoardDimension,
           Block[][] logicalGrid, int value, int xIndex, int yIndex) {
         this.value = value;
         this.instance = instance;
@@ -75,7 +75,7 @@ class Block {
         this.value = value;
         final String valueString = createValueString();
         valueText.setText(valueString);
-        if (value == Lab4_201_04.WIN_VALUE) {
+        if (value == BlockToss.WIN_VALUE) {
             instance.gameWin();
         }
     }

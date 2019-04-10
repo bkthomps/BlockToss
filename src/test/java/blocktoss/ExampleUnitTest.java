@@ -1,4 +1,4 @@
-package ca.uwaterloo.lab4_201_04;
+package blocktoss;
 
 import org.junit.Test;
 

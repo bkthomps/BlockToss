@@ -1,4 +1,4 @@
-package ca.uwaterloo.lab4_201_04;
+package blocktoss;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("ca.uwaterloo.lab4_201_04", appContext.getPackageName());
+        assertEquals("blocktoss", appContext.getPackageName());
     }
 }
