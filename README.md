@@ -1,7 +1,3 @@
-# Ece155
+# Block Toss
 
-University of Waterloo
-
-ECE 155 - Embedded Systems
-
-Spring 2017
+Physically move the phone in order to combine identical blocks. Similar to the popular game called 2048.
