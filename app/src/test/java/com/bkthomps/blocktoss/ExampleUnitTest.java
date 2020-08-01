@@ -1,4 +1,4 @@
-package blocktoss;
+package com.bkthomps.blocktoss;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package blocktoss;
+package com.bkthomps.blocktoss;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;

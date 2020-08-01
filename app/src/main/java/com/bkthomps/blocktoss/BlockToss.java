@@ -1,4 +1,4 @@
-package blocktoss;
+package com.bkthomps.blocktoss;
 
 import android.graphics.Color;
 import android.hardware.Sensor;

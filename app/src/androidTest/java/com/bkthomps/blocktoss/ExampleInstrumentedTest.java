@@ -1,4 +1,4 @@
-package blocktoss;
+package com.bkthomps.blocktoss;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

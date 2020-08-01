@@ -1,4 +1,4 @@
-package blocktoss;
+package com.bkthomps.blocktoss;
 
 import android.graphics.Point;
 import android.view.Display;
